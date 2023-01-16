@@ -12,6 +12,9 @@ using namespace std;
 
 int main()
 {
+	_setmode(_fileno(stdout), _O_U16TEXT);
+	//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
+
 	wcout << "HeippariShakki\n";
 	wcout << "Tervetuloa pelaamaan!\n";
 	int lopetus = 100;
