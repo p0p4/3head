@@ -18,13 +18,45 @@ Nappula* Asema::ml = new Lahetti(L"\u265D", 1, ML);
 Nappula* Asema::mr = new Ratsu(L"\u265E", 1, MR);
 Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
 
-
 Asema::Asema()
 {
 	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			_lauta[i][j] = NULL;
+		}
+	}
 
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
-	
+	_lauta[0][0] = vt;
+	_lauta[0][1] = vr;
+	_lauta[0][2] = vl;
+	_lauta[0][3] = vd;
+	_lauta[0][4] = vk;
+	_lauta[0][5] = vl;
+	_lauta[0][6] = vr;
+	_lauta[0][7] = vt;
+
+	for (int i = 0; i < 8; i++)
+	{
+		_lauta[1][i] = vs;
+	}
+
+	_lauta[7][0] = mt;
+	_lauta[7][1] = mr;
+	_lauta[7][2] = ml;
+	_lauta[7][3] = md;
+	_lauta[7][4] = mk;
+	_lauta[7][5] = ml;
+	_lauta[7][6] = mr;
+	_lauta[7][7] = mt;
+
+	for (int i = 0; i < 8; i++)
+	{
+		_lauta[6][i] = ms;
+	}
 }
 
 

@@ -52,7 +52,6 @@ int main()
 		}
 		asema.paivitaAsema(&siirto);
 	}
-
 	
 	return 0;
 }
