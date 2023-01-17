@@ -36,6 +36,7 @@ int main()
 		if (lista.size() == 0) {
 			lopetus = 0;
 			std::wcout << "Peli loppui";
+			Siirto siirto;
 			continue;
 		}
 		Siirto siirto;

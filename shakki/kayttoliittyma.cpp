@@ -68,9 +68,66 @@ void Kayttoliittyma::piirraLauta()
 */
 Siirto Kayttoliittyma::annaVastustajanSiirto()
 {
-	Siirto siirto;
+    Ruutu alku;
+    Ruutu loppu;
+    Siirto siirto;
+
+    int asciiConversionChar = 97;
+    int asciiConversionNum = 49;
+
+    wcout << "Anna siirto." << endl;
+    string siirtoStr;
+    cin >> siirtoStr;
+
+
+    while (siirtoStr.length() > 6 || (siirtoStr.length() < 5 && siirtoStr.length() != 3))
+    {
+        wcout << "Virheellinen siirto." << endl;
+
+        wcout << "Anna siirto." << endl;
+        cin >> siirtoStr;
+    }
+
+    if (siirtoStr.length() == 6)
+    {
+        alku.setSarake(int(siirtoStr[1]) - asciiConversionChar);
+        alku.setRivi((int)siirtoStr[2] - asciiConversionNum);
+
+        loppu.setSarake(int(siirtoStr[4]) - asciiConversionChar);
+        loppu.setRivi((int)siirtoStr[5] - asciiConversionNum);
+
+        Siirto siirtoTemp(alku, loppu);
+        siirto = siirtoTemp;
+    }
+    else if (siirtoStr.length() == 5 && siirtoStr[0] != 'O')
+    {
+        alku.setSarake(int(siirtoStr[0]) - asciiConversionChar);
+        alku.setRivi((int)siirtoStr[1] - asciiConversionNum);
+
+        loppu.setSarake(int(siirtoStr[3]) - asciiConversionChar);
+        loppu.setRivi((int)siirtoStr[4] - asciiConversionNum);
+
+        Siirto siirtoTemp(alku, loppu);
+        siirto = siirtoTemp;
+    }
+    else if (siirtoStr.length() == 5)
+    {
+        wcout << "pitkälinna" << endl;
+        Siirto siirtoTemp(false, true);
+        siirto = siirtoTemp;
+
+    }
+    else if (siirtoStr.length() == 3)
+    {
+        wcout << "lyhytlinna" << endl;
+        Siirto siirtoTemp(true, false);
+        siirto = siirtoTemp;
+
+    }
+     
+
 	return siirto;
-	
+
 }
 
 
