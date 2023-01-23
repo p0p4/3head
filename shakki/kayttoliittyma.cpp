@@ -88,6 +88,8 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
         cin >> siirtoStr;
     }
 
+    
+
     if (siirtoStr.length() == 6)
     {
         alku.setSarake(int(siirtoStr[1]) - asciiConversionChar);
@@ -124,10 +126,9 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
         siirto = siirtoTemp;
 
     }
-     
+ 
 
 	return siirto;
-
 }
 
 
