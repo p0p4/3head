@@ -110,14 +110,14 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
         Siirto siirtoTemp(alku, loppu);
         siirto = siirtoTemp;
     }
-    else if (siirtoStr.length() == 5)
+    else if (siirtoStr == "O-O-O")
     {
         wcout << "pitkälinna" << endl;
         Siirto siirtoTemp(false, true);
         siirto = siirtoTemp;
 
     }
-    else if (siirtoStr.length() == 3)
+    else if (siirtoStr == "O-O")
     {
         wcout << "lyhytlinna" << endl;
         Siirto siirtoTemp(true, false);
