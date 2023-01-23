@@ -74,6 +74,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 
     int asciiConversionChar = 97;
     int asciiConversionNum = 49;
+    int flipBoardConstant = 7;
 
     wcout << "Anna siirto." << endl;
     string siirtoStr;
@@ -93,10 +94,10 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
     if (siirtoStr.length() == 6)
     {
         alku.setSarake(int(siirtoStr[1]) - asciiConversionChar);
-        alku.setRivi((int)siirtoStr[2] - asciiConversionNum);
+        alku.setRivi(flipBoardConstant - ((int)siirtoStr[2] - asciiConversionNum));
 
         loppu.setSarake(int(siirtoStr[4]) - asciiConversionChar);
-        loppu.setRivi((int)siirtoStr[5] - asciiConversionNum);
+        loppu.setRivi(flipBoardConstant - ((int)siirtoStr[5] - asciiConversionNum));
 
         Siirto siirtoTemp(alku, loppu);
         siirto = siirtoTemp;
@@ -104,10 +105,10 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
     else if (siirtoStr.length() == 5 && siirtoStr[0] != 'O')
     {
         alku.setSarake(int(siirtoStr[0]) - asciiConversionChar);
-        alku.setRivi((int)siirtoStr[1] - asciiConversionNum);
+        alku.setRivi(flipBoardConstant - ((int)siirtoStr[1] - asciiConversionNum));
 
         loppu.setSarake(int(siirtoStr[3]) - asciiConversionChar);
-        loppu.setRivi((int)siirtoStr[4] - asciiConversionNum);
+        loppu.setRivi(flipBoardConstant - ((int)siirtoStr[4] - asciiConversionNum));
 
         Siirto siirtoTemp(alku, loppu);
         siirto = siirtoTemp;
