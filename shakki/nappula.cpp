@@ -7,7 +7,9 @@ using namespace std;
 
 Nappula::Nappula(wstring unicode, int vari, int koodi)
 {
-
+	setUnicode(unicode);
+	setVari(vari);
+	setKoodi(koodi);
 }
 
 
