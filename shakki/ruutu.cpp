@@ -1,30 +1,33 @@
 #include "ruutu.h"
 
-
 Ruutu::Ruutu(int sarake, int rivi)
 {
+	setSarake(sarake);
+	setRivi(rivi);
 }
 
+Ruutu::Ruutu()
+{
+	setSarake(0);
+	setRivi(0);
+}
 
 int Ruutu::getRivi()
 {
-	return 0;
+	return _rivi;
 }
-
 
 int Ruutu::getSarake()
 {
-	return 0;
+	return _sarake;
 }
 
-
-void Ruutu::setRivi(int rivi) 
+void Ruutu::setRivi(int rivi)
 {
-	
+	_rivi = rivi;
 }
 
-
-void Ruutu::setSarake(int sarake) 
+void Ruutu::setSarake(int sarake)
 {
-
+	_sarake = sarake;
 }
