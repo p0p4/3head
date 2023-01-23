@@ -61,75 +61,161 @@ Asema::Asema()
 
 void Asema::paivitaAsema(Siirto *siirto)
 {
-
 	// Kaksoisaskel-lippu on oletusarvoisesti pois p��lt�.
 	// Asetetaan my�hemmin, jos tarvii.
 
 	// Tarkastetaan on siirto lyhyt linna
+	if (siirto->_lyhytLinna)
+	{
+		if (getSiirtovuoro == 0)
+		{
+			_lauta[0][5] = vk;
+			_lauta[0][6] = vt;
+			_lauta[0][4] = NULL;
+			_lauta[0][7] = NULL;
+		}
+		else
+		{
+			_lauta[7][5] = mk;
+			_lauta[7][6] = mt;
+			_lauta[7][4] = NULL;
+			_lauta[7][7] = NULL;
+		}
+	}
 
 	// onko pitk� linna
+	else if (siirto->_pitkaLinna)
+	{
+		if (getSiirtovuoro == 0)
+		{
+			_lauta[0][3] = vk;
+			_lauta[0][2] = vt;
+			_lauta[0][4] = NULL;
+			_lauta[0][0] = NULL;
+		}
+		else
+		{
+			_lauta[7][3] = mk;
+			_lauta[7][2] = mt;
+			_lauta[7][4] = NULL;
+			_lauta[7][0] = NULL;
+		}
+	}
 
 	// Kaikki muut siirrot
+	else
+	{
+		// Ottaa siirron alkuruudussa olleen nappulan talteen
 
-	// Ottaa siirron alkuruudussa olleen nappulan talteen
+		// alku- ja loppurivi
+		int aR = siirto->_alkuRivi, lR = siirto->_loppuRivi;
+		// alku- ja loppusarake
+		int aS = siirto->_alkuSarake, lS = siirto->_loppuSarake;
 
-	// Laittaa talteen otetun nappulan uuteen ruutuun
+		// Tarkistetaan oliko sotilaan kaksoisaskel
+		// (asetetaan kaksoisaskel-lippu)
+		if (_lauta[lR][lS] == vs && lR == 3 && aR == 1)
+		{
+			kaksoisaskelSarakkeella = lS;
+		}
+		else if (_lauta[lR][lS] == ms && lR == 4 && aR == 6)
+		{
+			kaksoisaskelSarakkeella = lS;
+		}
+		else
+		{
+			kaksoisaskelSarakkeella = -1;
+		}
 
-	// Tarkistetaan oliko sotilaan kaksoisaskel
-	// (asetetaan kaksoisaskel-lippu)
+		// Laittaa talteen otetun nappulan uuteen ruutuun
+		_lauta[lR][lS] = _lauta[aR][aS];
 
-	// Ohestaly�nti on tyhj��n ruutuun. Vieress� oleva (sotilas) poistetaan.
+		// Ohestaly�nti on tyhj��n ruutuun. Vieress� oleva (sotilas) poistetaan.
 
-	//// Katsotaan jos nappula on sotilas ja rivi on p��tyrivi niin ei vaihdeta nappulaa
-	////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym�n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
+		//// Katsotaan jos nappula on sotilas ja rivi on p��tyrivi niin ei vaihdeta nappulaa
+		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym�n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
 
-	//
-	////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l�htenyt nappula
+		//
+		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l�htenyt nappula
+		_lauta[aR][aS] = NULL;
+	}
 
 	// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v�reille)
+	if (_lauta[lR][lS] == vk)
+	{
+		_onkoValkeaKuningasLiikkunut = true;
+	}
+	else if (_lauta[lR][lS] == mk)
+	{
+		_onkoMustaKuningasLiikkunut = true;
+	}
 
 	// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v�reille ja molemmille torneille)
+	if (_lauta[lR][lS] == vt)
+	{
+		if (lS == 0)
+		{
+			_onkoValkeaVTliikkunut = true;
+		}
+		else if (lS == 7)
+		{
+			_onkoValkeaOTliikkunut = true;
+		}
+	}
+	else if (_lauta[lR][lS] == mt)
+	{
+		if (lS == 0)
+		{
+			_onkoMustaVTliikkunut = true;
+		}
+		else if (lS == 7)
+		{
+			_onkoMustaOTliikkunut = true;
+		}
+	}
 
 	// p�ivitet��n _siirtovuoro
+	setSiirtovuoro(1 - getSiirtovuoro());
 }
 
 int Asema::getSiirtovuoro()
 {
-	return 0;
+	return _siirtovuoro;
 }
 
 void Asema::setSiirtovuoro(int vuoro)
 {
+	_siirtovuoro = vuoro;
 }
 
 bool Asema::getOnkoValkeaKuningasLiikkunut()
 {
-	return false;
+	return _onkoValkeaKuningasLiikkunut;
 }
 
 bool Asema::getOnkoMustaKuningasLiikkunut()
 {
-	return false;
+	return _onkoMustaKuningasLiikkunut;
 }
 
 bool Asema::getOnkoValkeaDTliikkunut()
 {
-	return false;
+	return _onkoValkeaDTliikkunut;
 }
 
 bool Asema::getOnkoValkeaKTliikkunut()
 {
-	return false;
+	return _onkoValkeaKTliikkunut;
 }
 
 bool Asema::getOnkoMustaDTliikkunut()
 {
-	return false;
+	return _onkoMustaDTliikkunut;
 }
 
 bool Asema::getOnkoMustaKTliikkunut()
 {
-	return false;
+	return _onkoMustaKTliikkunut;
 }
 
 /* 1. Laske nappuloiden arvo
