@@ -1,2 +1,10 @@
-﻿  kayttoliittyma.cpp
-  shakki.vcxproj -> C:\Users\nikke\source\repos\shakki\p0p4\3head\Debug\shakki.exe
+﻿  asema.cpp
+  kayttoliittyma.cpp
+  main.cpp
+  nappula.cpp
+  peli.cpp
+  ruutu.cpp
+  siirto.cpp
+  vastustaja.cpp
+  Generating Code...
+  shakki.vcxproj -> Z:\TiVi\shakki\3head\Debug\shakki.exe

@@ -88,7 +88,6 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
         wcout << "Anna siirto." << endl;
         cin >> siirtoStr;
     }
-
     
 
     if (siirtoStr.length() == 6)
@@ -98,6 +97,13 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 
         loppu.setSarake(int(siirtoStr[4]) - asciiConversionChar);
         loppu.setRivi(flipBoardConstant - ((int)siirtoStr[5] - asciiConversionNum));
+
+        if ((alku.getRivi() < 0 || alku.getRivi() > 7) || (alku.getSarake() < 0 || alku.getSarake() > 7) || (loppu.getRivi() < 0 || loppu.getRivi() > 7) || (loppu.getSarake() < 0 || loppu.getSarake() > 7))
+        {
+            wcout << "Virheellinen siirto." << endl;
+            siirto = annaVastustajanSiirto();
+            return siirto;
+        }
 
         Siirto siirtoTemp(alku, loppu);
         siirto = siirtoTemp;
@@ -109,6 +115,13 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 
         loppu.setSarake(int(siirtoStr[3]) - asciiConversionChar);
         loppu.setRivi(flipBoardConstant - ((int)siirtoStr[4] - asciiConversionNum));
+
+        if ((alku.getRivi() < 0 || alku.getRivi() > 7) || (alku.getSarake() < 0 || alku.getSarake() > 7) || (loppu.getRivi() < 0 || loppu.getRivi() > 7) || (loppu.getSarake() < 0 || loppu.getSarake() > 7))
+        {
+            wcout << "Virheellinen siirto." << endl;
+            siirto = annaVastustajanSiirto();
+            return siirto;
+        }
 
         Siirto siirtoTemp(alku, loppu);
         siirto = siirtoTemp;
@@ -125,7 +138,7 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
         siirto = siirtoTemp;
 
     }
- 
+
 
 	return siirto;
 }
