@@ -121,25 +121,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 		}
 	}
 
-	// onko pitk� linna
-	else if (siirto->onkoPitkälinna())
-	{
-		if (getSiirtovuoro() == 0)
-		{
-			_lauta[7][2] = vk;
-			_lauta[7][3] = vt;
-			_lauta[7][4] = NULL;
-			_lauta[7][0] = NULL;
-		}
-		else
-		{
-			_lauta[0][2] = mk;
-			_lauta[0][3] = mt;
-			_lauta[0][4] = NULL;
-			_lauta[0][0] = NULL;
-		}
-	}
-
 	// Kaikki muut siirrot
 	else
 	{
@@ -164,9 +145,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 		_lauta[lR][lS] = _lauta[aR][aS];
 
 		// Ohestaly�nti on tyhj��n ruutuun. Vieress� oleva (sotilas) poistetaan.
-
-		//// Katsotaan jos nappula on sotilas ja rivi on p��tyrivi niin ei vaihdeta nappulaa
-		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym�n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
 
 		//// Katsotaan jos nappula on sotilas ja rivi on p��tyrivi niin ei vaihdeta nappulaa
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym�n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
@@ -375,9 +353,6 @@ MinMaxPaluu Asema::mini(int syvyys)
 }
 
 bool Asema::onkoRuutuUhattu(Ruutu *ruutu, int vastustajanVari)
-bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
-bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
-bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 {
 
 	return false;
