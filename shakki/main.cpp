@@ -12,6 +12,9 @@ using namespace std;
 
 int main()
 {
+	_setmode(_fileno(stdout), _O_U16TEXT);
+	//SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
+
 	wcout << "HeippariShakki\n";
 	wcout << "Tervetuloa pelaamaan!\n";
 	int lopetus = 100;
@@ -30,29 +33,29 @@ int main()
 		wcout << "\n";
 		// Tarkasta onko peli loppu?
 		asema.annaLaillisetSiirrot(lista);
-		if (lista.size() == 0) {
-			lopetus = 0;
-			std::wcout << "Peli loppui";
-			continue;
-		}
+		//if (lista.size() == 0) {
+		//	lopetus = 0;
+		//	std::wcout << "Peli loppui";
+		//	Siirto siirto;
+		//	continue;
+		//}
 		Siirto siirto;
-		if (asema.getSiirtovuoro() == koneenVari) {
-			MinMaxPaluu paluu;
-			if (koneenVari == 0) {
-				paluu = asema.maxi(3);
-			}
-			else {
-				paluu = asema.mini(3);
-			}
-			siirto = paluu._parasSiirto;
-		}
-		else {
+		//if (asema.getSiirtovuoro() == koneenVari) {
+		//	MinMaxPaluu paluu;
+		//	if (koneenVari == 0) {
+		//		paluu = asema.maxi(3);
+		//	}
+		//	else {
+		//		paluu = asema.mini(3);
+		//	}
+		//	siirto = paluu._parasSiirto;
+		//}
+		//else {
 			siirto = Kayttoliittyma::getInstance()->
 				annaVastustajanSiirto();
-		}
+		//}
 		asema.paivitaAsema(&siirto);
 	}
-
 	
 	return 0;
 }

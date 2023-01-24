@@ -1,8 +1,9 @@
-#include <iostream>
+﻿#include <iostream>
 #include "asema.h"
 #include "minMaxPaluu.h"
 #include "nappula.h"
 #include "ruutu.h"
+using namespace std;
 
 Nappula *Asema::vk = new Kuningas(L"\u2654", 0, VK);
 Nappula *Asema::vd = new Daami(L"\u2655", 0, VD);
@@ -30,75 +31,93 @@ Asema::Asema()
 	}
 
 	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
-	_lauta[0][0] = vt;
-	_lauta[0][1] = vr;
-	_lauta[0][2] = vl;
-	_lauta[0][3] = vd;
-	_lauta[0][4] = vk;
-	_lauta[0][5] = vl;
-	_lauta[0][6] = vr;
-	_lauta[0][7] = vt;
+	_lauta[0][0] = mt;
+	_lauta[0][1] = mr;
+	_lauta[0][2] = ml;
+	_lauta[0][3] = md;
+	_lauta[0][4] = mk;
+	_lauta[0][5] = ml;
+	_lauta[0][6] = mr;
+	_lauta[0][7] = mt;
 
 	for (int i = 0; i < 8; i++)
 	{
-		_lauta[1][i] = vs;
+		_lauta[1][i] = ms;
 	}
 
-	_lauta[7][0] = mt;
-	_lauta[7][1] = mr;
-	_lauta[7][2] = ml;
-	_lauta[7][3] = md;
-	_lauta[7][4] = mk;
-	_lauta[7][5] = ml;
-	_lauta[7][6] = mr;
-	_lauta[7][7] = mt;
+	_lauta[7][0] = vt;
+	_lauta[7][1] = vr;
+	_lauta[7][2] = vl;
+	_lauta[7][3] = vd;
+	_lauta[7][4] = vk;
+	_lauta[7][5] = vl;
+	_lauta[7][6] = vr;
+	_lauta[7][7] = vt;
 
 	for (int i = 0; i < 8; i++)
 	{
-		_lauta[6][i] = ms;
+		_lauta[6][i] = vs;
 	}
+
+	setSiirtovuoro(0);
+	_onkoValkeaKuningasLiikkunut = false;
+	_onkoMustaKuningasLiikkunut = false;
+	_onkoValkeaDTliikkunut = false;
+	_onkoValkeaKTliikkunut = false;
+	_onkoMustaDTliikkunut = false;
+	_onkoMustaKTliikkunut = false;
 }
 
 void Asema::paivitaAsema(Siirto *siirto)
 {
+	int aR, aS, lR, lS;
+
+	// alku- ja loppurivi
+	aR = siirto->getAlkuruutu().getRivi();
+	lR = siirto->getLoppuruutu().getRivi();
+
+	// alku- ja loppusarake
+	aS = siirto->getAlkuruutu().getSarake();
+	lS = siirto->getLoppuruutu().getSarake();
+
 	// Kaksoisaskel-lippu on oletusarvoisesti pois p��lt�.
 	// Asetetaan my�hemmin, jos tarvii.
 
 	// Tarkastetaan on siirto lyhyt linna
-	if (siirto->_lyhytLinna)
+	if (siirto->onkoLyhytLinna())
 	{
-		if (getSiirtovuoro == 0)
+		if (getSiirtovuoro() == 0)
 		{
-			_lauta[0][5] = vk;
-			_lauta[0][6] = vt;
-			_lauta[0][4] = NULL;
-			_lauta[0][7] = NULL;
+			_lauta[7][6] = vk;
+			_lauta[7][5] = vt;
+			_lauta[7][4] = NULL;
+			_lauta[7][7] = NULL;
 		}
 		else
 		{
-			_lauta[7][5] = mk;
-			_lauta[7][6] = mt;
-			_lauta[7][4] = NULL;
-			_lauta[7][7] = NULL;
+			_lauta[0][6] = mk;
+			_lauta[0][5] = mt;
+			_lauta[0][4] = NULL;
+			_lauta[0][7] = NULL;
 		}
 	}
 
 	// onko pitk� linna
-	else if (siirto->_pitkaLinna)
+	else if (siirto->onkoPitkälinna())
 	{
-		if (getSiirtovuoro == 0)
+		if (getSiirtovuoro() == 0)
 		{
-			_lauta[0][3] = vk;
-			_lauta[0][2] = vt;
-			_lauta[0][4] = NULL;
-			_lauta[0][0] = NULL;
+			_lauta[7][2] = vk;
+			_lauta[7][3] = vt;
+			_lauta[7][4] = NULL;
+			_lauta[7][0] = NULL;
 		}
 		else
 		{
-			_lauta[7][3] = mk;
-			_lauta[7][2] = mt;
-			_lauta[7][4] = NULL;
-			_lauta[7][0] = NULL;
+			_lauta[0][2] = mk;
+			_lauta[0][3] = mt;
+			_lauta[0][4] = NULL;
+			_lauta[0][0] = NULL;
 		}
 	}
 
@@ -107,18 +126,13 @@ void Asema::paivitaAsema(Siirto *siirto)
 	{
 		// Ottaa siirron alkuruudussa olleen nappulan talteen
 
-		// alku- ja loppurivi
-		int aR = siirto->_alkuRivi, lR = siirto->_loppuRivi;
-		// alku- ja loppusarake
-		int aS = siirto->_alkuSarake, lS = siirto->_loppuSarake;
-
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
-		if (_lauta[lR][lS] == vs && lR == 3 && aR == 1)
+		if (_lauta[lR][lS] == vs && lR == 4 && aR == 6)
 		{
 			kaksoisaskelSarakkeella = lS;
 		}
-		else if (_lauta[lR][lS] == ms && lR == 4 && aR == 6)
+		else if (_lauta[lR][lS] == ms && lR == 3 && aR == 1)
 		{
 			kaksoisaskelSarakkeella = lS;
 		}
@@ -141,36 +155,36 @@ void Asema::paivitaAsema(Siirto *siirto)
 	}
 
 	// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v�reille)
-	if (_lauta[lR][lS] == vk)
+	if (aR == 7 && aS == 4)
 	{
 		_onkoValkeaKuningasLiikkunut = true;
 	}
-	else if (_lauta[lR][lS] == mk)
+	else if (aR == 0 && aS == 4)
 	{
 		_onkoMustaKuningasLiikkunut = true;
 	}
 
 	// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v�reille ja molemmille torneille)
-	if (_lauta[lR][lS] == vt)
+	if (aR == 7)
 	{
-		if (lS == 0)
+		if (aS == 0)
 		{
-			_onkoValkeaVTliikkunut = true;
+			_onkoValkeaDTliikkunut = true;
 		}
-		else if (lS == 7)
+		else if (aS == 7)
 		{
-			_onkoValkeaOTliikkunut = true;
+			_onkoValkeaKTliikkunut = true;
 		}
 	}
-	else if (_lauta[lR][lS] == mt)
+	else if (aR == 0)
 	{
-		if (lS == 0)
+		if (aS == 0)
 		{
-			_onkoMustaVTliikkunut = true;
+			_onkoMustaDTliikkunut = true;
 		}
-		else if (lS == 7)
+		else if (aS == 7)
 		{
-			_onkoMustaOTliikkunut = true;
+			_onkoMustaKTliikkunut = true;
 		}
 	}
 
@@ -224,7 +238,6 @@ Torni = 5
 L�hetti = 3,25
 Ratsu = 3
 Sotilas = 1
-
 2. Kuninkaan hyvyys
 Jos avaus tai keskipeli, niin hyv� ett� kunigas g1 tai b1/c1
 Loppupeliss� vaikea sanoa halutaanko olla auttamassa omaa sotilasta korottumaan
