@@ -21,7 +21,6 @@ Nappula *Asema::ms = new Sotilas(L"\u265F", 1, MS);
 
 Asema::Asema()
 {
-	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
@@ -30,36 +29,36 @@ Asema::Asema()
 		}
 	}
 
-	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
-	_lauta[0][0] = mt;
-	_lauta[0][1] = mr;
-	_lauta[0][2] = ml;
-	_lauta[0][3] = md;
-	_lauta[0][4] = mk;
-	_lauta[0][5] = ml;
-	_lauta[0][6] = mr;
-	_lauta[0][7] = mt;
+	_lauta[7][0] = mt;
+	_lauta[7][1] = mr;
+	_lauta[7][2] = ml;
+	_lauta[7][3] = md;
+	_lauta[7][4] = mk;
+	_lauta[7][5] = ml;
+	_lauta[7][6] = mr;
+	_lauta[7][7] = mt;
 
 	for (int i = 0; i < 8; i++)
 	{
-		_lauta[1][i] = ms;
+		_lauta[6][i] = ms;
 	}
-
-	_lauta[7][0] = vt;
-	_lauta[7][1] = vr;
-	_lauta[7][2] = vl;
-	_lauta[7][3] = vd;
-	_lauta[7][4] = vk;
-	_lauta[7][5] = vl;
-	_lauta[7][6] = vr;
-	_lauta[7][7] = vt;
 
 	for (int i = 0; i < 8; i++)
 	{
-		_lauta[6][i] = vs;
+		_lauta[1][i] = vs;
 	}
+
+	_lauta[0][0] = vt;
+	_lauta[0][1] = vr;
+	_lauta[0][2] = vl;
+	_lauta[0][3] = vd;
+	_lauta[0][4] = vk;
+	_lauta[0][5] = vl;
+	_lauta[0][6] = vr;
+	_lauta[0][7] = vt;
 
 	setSiirtovuoro(0);
+
 	_onkoValkeaKuningasLiikkunut = false;
 	_onkoMustaKuningasLiikkunut = false;
 	_onkoValkeaDTliikkunut = false;
@@ -88,43 +87,58 @@ void Asema::paivitaAsema(Siirto *siirto)
 	{
 		if (getSiirtovuoro() == 0)
 		{
-			_lauta[7][6] = vk;
-			_lauta[7][5] = vt;
-			_lauta[7][4] = NULL;
-			_lauta[7][7] = NULL;
+			Siirto *tmp = new Siirto(Ruutu(7, 4), Ruutu(7, 6));
+			paivitaAsemat(tmp);
+			setSiirtovuoro(1 - getSiirtovuoro());
+			tmp = new Siirto(Ruutu(7, 7), Ruutu(7, 5));
+			paivitaAsemat(tmp);
 		}
 		else
 		{
-			_lauta[0][6] = mk;
-			_lauta[0][5] = mt;
-			_lauta[0][4] = NULL;
-			_lauta[0][7] = NULL;
+			Siirto *tmp = new Siirto(Ruutu(0, 4), Ruutu(0, 6));
+			paivitaAsemat(tmp);
+			setSiirtovuoro(1 - getSiirtovuoro());
+			tmp = new Siirto(Ruutu(0, 7), Ruutu(0, 5));
+			paivitaAsemat(tmp);
 		}
 	}
-
 	// onko pitk� linna
-	else if (siirto->onkoPitkälinna())
+	else if (siirto->onkoPitkalinna())
 	{
 		if (getSiirtovuoro() == 0)
 		{
-			_lauta[7][2] = vk;
-			_lauta[7][3] = vt;
-			_lauta[7][4] = NULL;
-			_lauta[7][0] = NULL;
+			Siirto *tmp = new Siirto(Ruutu(7, 4), Ruutu(7, 2));
+			paivitaAsemat(tmp);
+			setSiirtovuoro(1 - getSiirtovuoro());
+			tmp = new Siirto(Ruutu(7, 0), Ruutu(7, 3));
+			paivitaAsemat(tmp);
 		}
 		else
 		{
-			_lauta[0][2] = mk;
-			_lauta[0][3] = mt;
-			_lauta[0][4] = NULL;
-			_lauta[0][0] = NULL;
+			Siirto *tmp = new Siirto(Ruutu(0, 4), Ruutu(0, 2));
+			paivitaAsemat(tmp);
+			setSiirtovuoro(1 - getSiirtovuoro());
+			tmp = new Siirto(Ruutu(0, 0), Ruutu(0, 3));
+			paivitaAsemat(tmp);
 		}
 	}
-
 	// Kaikki muut siirrot
 	else
 	{
 		// Ottaa siirron alkuruudussa olleen nappulan talteen
+
+		// Ohestaly�nti on tyhj��n ruutuun. Vieress� oleva (sotilas) poistetaan.
+		if (kaksoisaskelSarakkeella != -1)
+		{
+			if (_lauta[aR][aS] == vs && lS == kaksoisaskelSarakkeella)
+			{
+				_lauta[lR - 1][lS] = NULL;
+			}
+			else if (_lauta[aR][aS] == ms && lS == kaksoisaskelSarakkeella)
+			{
+				_lauta[lR + 1][lS] = NULL;
+			}
+		}
 
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
@@ -142,30 +156,30 @@ void Asema::paivitaAsema(Siirto *siirto)
 		}
 
 		// Laittaa talteen otetun nappulan uuteen ruutuun
-		_lauta[lR][lS] = _lauta[aR][aS];
-
-		// Ohestaly�nti on tyhj��n ruutuun. Vieress� oleva (sotilas) poistetaan.
 
 		//// Katsotaan jos nappula on sotilas ja rivi on p��tyrivi niin ei vaihdeta nappulaa
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym�n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
 
-		//
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l�htenyt nappula
+		if (!(_lauta[aR][aS] == vs && lR == 7) && !(_lauta[aR][aS] == ms && lR == 0))
+		{
+			_lauta[lR][lS] = _lauta[aR][aS];
+		}
 		_lauta[aR][aS] = NULL;
 	}
 
 	// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v�reille)
-	if (aR == 7 && aS == 4)
+	if (_lauta[aR][aS] == vk)
 	{
 		_onkoValkeaKuningasLiikkunut = true;
 	}
-	else if (aR == 0 && aS == 4)
+	else if (_lauta[aR][aS] == mk)
 	{
 		_onkoMustaKuningasLiikkunut = true;
 	}
 
 	// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v�reille ja molemmille torneille)
-	if (aR == 7)
+	if (_lauta[aR][aS] == vt)
 	{
 		if (aS == 0)
 		{
@@ -176,7 +190,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 			_onkoValkeaKTliikkunut = true;
 		}
 	}
-	else if (aR == 0)
+	else if (_lauta[aR][aS] == mt)
 	{
 		if (aS == 0)
 		{
