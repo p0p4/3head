@@ -12,12 +12,12 @@ Nappula* Asema::vl = new Lahetti(L"\u2657", 0, VL);
 Nappula* Asema::vr = new Ratsu(L"\u2658", 0, VR);
 Nappula* Asema::vs = new Sotilas(L"\u2659", 0, VS);
 
-Nappula* Asema::mk = new Kuningas(L"\u265A", 1, MK);
-Nappula* Asema::md = new Daami(L"\u265B", 1, MD);
-Nappula* Asema::mt = new Torni(L"\u265C", 1, MT);
-Nappula* Asema::ml = new Lahetti(L"\u265D", 1, ML);
-Nappula* Asema::mr = new Ratsu(L"\u265E", 1, MR);
-Nappula* Asema::ms = new Sotilas(L"\u265F", 1, MS);
+Nappula *Asema::mk = new Kuningas(L"\u265A", 1, MK);
+Nappula *Asema::md = new Daami(L"\u265B", 1, MD);
+Nappula *Asema::mt = new Torni(L"\u265C", 1, MT);
+Nappula *Asema::ml = new Lahetti(L"\u265D", 1, ML);
+Nappula *Asema::mr = new Ratsu(L"\u265E", 1, MR);
+Nappula *Asema::ms = new Sotilas(L"\u265F", 1, MS);
 
 Asema::Asema()
 {
@@ -68,8 +68,7 @@ Asema::Asema()
 	_onkoMustaKTliikkunut = false;
 }
 
-
-void Asema::paivitaAsema(Siirto* siirto)
+void Asema::paivitaAsema(Siirto *siirto)
 {
 	int aR, aS, lR, lS;
 
@@ -127,12 +126,8 @@ void Asema::paivitaAsema(Siirto* siirto)
 	{
 		// Ottaa siirron alkuruudussa olleen nappulan talteen
 
-
-
-		
-
-		//Laittaa talteen otetun nappulan uuteen ruutuun
-
+		// Tarkistetaan oliko sotilaan kaksoisaskel
+		// (asetetaan kaksoisaskel-lippu)
 		if (_lauta[lR][lS] == vs && lR == 4 && aR == 6)
 		{
 			kaksoisaskelSarakkeella = lS;
@@ -146,19 +141,19 @@ void Asema::paivitaAsema(Siirto* siirto)
 			kaksoisaskelSarakkeella = -1;
 		}
 
-		//Laittaa talteen otetun nappulan uuteen ruutuun
-
-
-		//Laittaa talteen otetun nappulan uuteen ruutuun
-
-
-		// Tarkistetaan oliko sotilaan kaksoisaskel
-		// (asetetaan kaksoisaskel-lippu)
-
 		// Laittaa talteen otetun nappulan uuteen ruutuun
 		_lauta[lR][lS] = _lauta[aR][aS];
 
 		// Ohestaly�nti on tyhj��n ruutuun. Vieress� oleva (sotilas) poistetaan.
+
+		//// Katsotaan jos nappula on sotilas ja rivi on p��tyrivi niin ei vaihdeta nappulaa
+		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym�n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
+
+		//
+		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l�htenyt nappula
+		_lauta[aR][aS] = NULL;
+	}
+
 	// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v�reille)
 	if (aR == 7 && aS == 4)
 	{
@@ -192,21 +187,12 @@ void Asema::paivitaAsema(Siirto* siirto)
 			_onkoMustaKTliikkunut = true;
 		}
 	}
-		// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille väreille ja molemmille torneille)
+
 	// p�ivitet��n _siirtovuoro
 	setSiirtovuoro(1 - getSiirtovuoro());
 }
-	//päivitetään _siirtovuoro
+
 int Asema::getSiirtovuoro()
-
-
-int Asema::getSiirtovuoro() 
-
-
-int Asema::getSiirtovuoro() 
-
-
-int Asema::getSiirtovuoro() 
 {
 	return _siirtovuoro;
 }
@@ -357,34 +343,25 @@ MinMaxPaluu Asema::minimax(int syvyys)
 MinMaxPaluu Asema::maxi(int syvyys)
 {
 	MinMaxPaluu paluu;
-bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
+	return paluu;
 }
 
-
-bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
+MinMaxPaluu Asema::mini(int syvyys)
 {
-void Asema::huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari)
-{
-bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
+	MinMaxPaluu paluu;
+	return paluu;
 }
-void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista)
-{
-}	
-bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
+
+bool Asema::onkoRuutuUhattu(Ruutu *ruutu, int vastustajanVari)
 {
 
-void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
-	
-}
+	return false;
 }
 
-
-void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
-	
-}
+void Asema::huolehdiKuninkaanShakeista(std::list<Siirto> &lista, int vari)
+{
 }
 
-
-void Asema::annaLaillisetSiirrot(std::list<Siirto>& lista) {
-	
+void Asema::annaLaillisetSiirrot(std::list<Siirto> &lista)
+{
 }
