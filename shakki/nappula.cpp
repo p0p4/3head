@@ -230,8 +230,8 @@ void Lahetti::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 
 void Daami::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
-
-
+	Torni::annaSiirrot(lista, ruutu, asema, vari);
+	Lahetti::annaSiirrot(lista, ruutu, asema, vari);
 }
 
 
@@ -325,27 +325,39 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 {
 	if (vari == 0)
 	{
-		if (asema->_lauta[ruutu->getRivi() - 1][ruutu->getSarake()] == NULL)
+		if (asema->_lauta[ruutu->getRivi() + 1][ruutu->getSarake()] == NULL)
 		{
-			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 1, ruutu->getSarake()));
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 1, ruutu->getSarake()));
 			lista.push_back(siirto);
 
-			if (asema->_lauta[ruutu->getRivi() - 2][ruutu->getSarake()] == NULL && ruutu->getRivi() == 7)
+			if (asema->_lauta[ruutu->getRivi() + 2][ruutu->getSarake()] == NULL && ruutu->getRivi() == 1)
 			{
-				Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 2, ruutu->getSarake()));
+				Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 2, ruutu->getSarake()));
 				lista.push_back(siirto);
 			}
 		}
 
-		if (asema->_lauta[ruutu->getRivi() - 1][ruutu->getSarake() + 1]->getVari() == 1)
+		if (asema->_lauta[ruutu->getRivi() + 1][ruutu->getSarake() + 1]->getVari() == 1)
 		{
-			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 1, ruutu->getSarake() + 1));
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 1, ruutu->getSarake() + 1));
 			lista.push_back(siirto);
 		}
 
-		if (asema->_lauta[ruutu->getRivi() - 1][ruutu->getSarake() - 1]->getVari() == 1)
+		if (asema->_lauta[ruutu->getRivi() + 1][ruutu->getSarake() - 1]->getVari() == 1)
 		{
-			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 1, ruutu->getSarake() - 1));
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 1, ruutu->getSarake() - 1));
+			lista.push_back(siirto);
+		}
+
+		if (asema->_lauta[ruutu->getRivi()][ruutu->getSarake() + 1]->getKoodi() == MS && asema->kaksoisaskelSarakkeella == ruutu->getSarake() + 1 && ruutu->getRivi() == 4)
+		{
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 1, ruutu->getSarake() + 1));
+			lista.push_back(siirto);
+		}
+
+		if (asema->_lauta[ruutu->getRivi()][ruutu->getSarake() - 1]->getKoodi() == MS && asema->kaksoisaskelSarakkeella == ruutu->getSarake() - 1 && ruutu->getRivi() == 4)
+		{
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 1, ruutu->getSarake() - 1));
 			lista.push_back(siirto);
 		}
 	}
@@ -353,29 +365,42 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 
 	if (vari == 1)
 	{
-		if (asema->_lauta[ruutu->getRivi() + 1][ruutu->getSarake()] == NULL)
+		if (asema->_lauta[ruutu->getRivi() - 1][ruutu->getSarake()] == NULL)
 		{
-			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 1, ruutu->getSarake()));
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 1, ruutu->getSarake()));
 			lista.push_back(siirto);
 
-			if (asema->_lauta[ruutu->getRivi() + 2][ruutu->getSarake()] == NULL && ruutu->getRivi() == 2)
+			if (asema->_lauta[ruutu->getRivi() - 2][ruutu->getSarake()] == NULL && ruutu->getRivi() == 6)
 			{
-				Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 2, ruutu->getSarake()));
+				Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 2, ruutu->getSarake()));
 				lista.push_back(siirto);
 			}
 		}
 
-		if (asema->_lauta[ruutu->getRivi() + 1][ruutu->getSarake() + 1]->getVari() == 0)
+		if (asema->_lauta[ruutu->getRivi() - 1][ruutu->getSarake() + 1]->getVari() == 0)
 		{
-			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 1, ruutu->getSarake() + 1));
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 1, ruutu->getSarake() + 1));
 			lista.push_back(siirto);
 		}
 
-		if (asema->_lauta[ruutu->getRivi() + 1][ruutu->getSarake() - 1]->getVari() == 0)
+		if (asema->_lauta[ruutu->getRivi() - 1][ruutu->getSarake() - 1]->getVari() == 0)
 		{
-			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 1, ruutu->getSarake() - 1));
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 1, ruutu->getSarake() - 1));
 			lista.push_back(siirto);
 		}
+
+		if (asema->_lauta[ruutu->getRivi()][ruutu->getSarake() + 1]->getKoodi() == VS && asema->kaksoisaskelSarakkeella == ruutu->getSarake() + 1 &&  ruutu->getRivi() == 3)
+		{
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 1, ruutu->getSarake() + 1));
+			lista.push_back(siirto);
+		}
+
+		if (asema->_lauta[ruutu->getRivi()][ruutu->getSarake() - 1]->getKoodi() == VS && asema->kaksoisaskelSarakkeella == ruutu->getSarake() - 1 && ruutu->getRivi() == 3)
+		{
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 1, ruutu->getSarake() - 1));
+			lista.push_back(siirto);
+		}
+
 	}
 }
 
