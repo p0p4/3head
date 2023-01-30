@@ -10,8 +10,13 @@ Siirto::Siirto(Ruutu alkuRuutu, Ruutu loppuRuutu)
 
 Siirto::Siirto(bool lyhytLinna, bool pitkaLinna)
 {
+	if (lyhytLinna && pitkaLinna)
+		return;
+
 	_lyhytLinna = lyhytLinna;
 	_pitkaLinna = pitkaLinna;
+	_alkuRuutu = Ruutu(0, 0);
+	_loppuRuutu = Ruutu(0, 0);
 }
 
 Ruutu Siirto::getAlkuruutu()
@@ -29,7 +34,7 @@ bool Siirto::onkoLyhytLinna()
 	return _lyhytLinna;
 }
 
-bool Siirto::onkoPitkälinna()
+bool Siirto::onkoPitkalinna()
 {
 	return _pitkaLinna;
 }

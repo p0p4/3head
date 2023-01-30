@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include "asema.h"
-#include "minMaxPaluu.h"
+#include "minmaxpaluu.h"
 #include "nappula.h"
 #include "ruutu.h"
 using namespace std;
@@ -21,7 +21,6 @@ Nappula *Asema::ms = new Sotilas(L"\u265F", 1, MS);
 
 Asema::Asema()
 {
-	// Ensin alustetaan kaikki laudan ruudut nappulla "NULL", koska muuten ruuduissa satunnaista tauhkaa
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
@@ -30,36 +29,36 @@ Asema::Asema()
 		}
 	}
 
-	// Asetetaan alkuaseman mukaisesti nappulat ruuduille
-	_lauta[0][0] = mt;
-	_lauta[0][1] = mr;
-	_lauta[0][2] = ml;
-	_lauta[0][3] = md;
-	_lauta[0][4] = mk;
-	_lauta[0][5] = ml;
-	_lauta[0][6] = mr;
-	_lauta[0][7] = mt;
+	_lauta[7][0] = mt;
+	_lauta[7][1] = mr;
+	_lauta[7][2] = ml;
+	_lauta[7][3] = md;
+	_lauta[7][4] = mk;
+	_lauta[7][5] = ml;
+	_lauta[7][6] = mr;
+	_lauta[7][7] = mt;
 
 	for (int i = 0; i < 8; i++)
 	{
-		_lauta[1][i] = ms;
+		_lauta[6][i] = ms;
 	}
-
-	_lauta[7][0] = vt;
-	_lauta[7][1] = vr;
-	_lauta[7][2] = vl;
-	_lauta[7][3] = vd;
-	_lauta[7][4] = vk;
-	_lauta[7][5] = vl;
-	_lauta[7][6] = vr;
-	_lauta[7][7] = vt;
 
 	for (int i = 0; i < 8; i++)
 	{
-		_lauta[6][i] = vs;
+		_lauta[1][i] = vs;
 	}
+
+	_lauta[0][0] = vt;
+	_lauta[0][1] = vr;
+	_lauta[0][2] = vl;
+	_lauta[0][3] = vd;
+	_lauta[0][4] = vk;
+	_lauta[0][5] = vl;
+	_lauta[0][6] = vr;
+	_lauta[0][7] = vt;
 
 	setSiirtovuoro(0);
+
 	_onkoValkeaKuningasLiikkunut = false;
 	_onkoMustaKuningasLiikkunut = false;
 	_onkoValkeaDTliikkunut = false;
@@ -86,53 +85,46 @@ void Asema::paivitaAsema(Siirto *siirto)
 	// Tarkastetaan on siirto lyhyt linna
 	if (siirto->onkoLyhytLinna())
 	{
-		if (getSiirtovuoro() == 0)
-		{
-			_lauta[7][6] = vk;
-			_lauta[7][5] = vt;
-			_lauta[7][4] = NULL;
-			_lauta[7][7] = NULL;
-		}
-		else
-		{
-			_lauta[0][6] = mk;
-			_lauta[0][5] = mt;
-			_lauta[0][4] = NULL;
-			_lauta[0][7] = NULL;
-		}
+		int row = 7 * getSiirtovuoro();
+		_lauta[row][6] = _lauta[row][4];
+		_lauta[row][5] = _lauta[row][7];
+		_lauta[row][4] = NULL;
+		_lauta[row][7] = NULL;
 	}
-
 	// onko pitk� linna
-	else if (siirto->onkoPitkälinna())
+	else if (siirto->onkoPitkalinna())
 	{
-		if (getSiirtovuoro() == 0)
-		{
-			_lauta[7][2] = vk;
-			_lauta[7][3] = vt;
-			_lauta[7][4] = NULL;
-			_lauta[7][0] = NULL;
-		}
-		else
-		{
-			_lauta[0][2] = mk;
-			_lauta[0][3] = mt;
-			_lauta[0][4] = NULL;
-			_lauta[0][0] = NULL;
-		}
+		int row = 7 * getSiirtovuoro();
+		_lauta[row][2] = _lauta[row][4];
+		_lauta[row][3] = _lauta[row][0];
+		_lauta[row][4] = NULL;
+		_lauta[row][0] = NULL;
 	}
-
 	// Kaikki muut siirrot
 	else
 	{
 		// Ottaa siirron alkuruudussa olleen nappulan talteen
 
+		// Ohestaly�nti on tyhj��n ruutuun. Vieress� oleva (sotilas) poistetaan.
+		if (kaksoisaskelSarakkeella != -1)
+		{
+			if (_lauta[aR][aS] == vs && lS == kaksoisaskelSarakkeella)
+			{
+				_lauta[lR - 1][lS] = NULL;
+			}
+			else if (_lauta[aR][aS] == ms && lS == kaksoisaskelSarakkeella)
+			{
+				_lauta[lR + 1][lS] = NULL;
+			}
+		}
+
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
-		if (_lauta[lR][lS] == vs && lR == 4 && aR == 6)
+		if (_lauta[aR][aS] == vs && lR == 3 && aR == 1)
 		{
 			kaksoisaskelSarakkeella = lS;
 		}
-		else if (_lauta[lR][lS] == ms && lR == 3 && aR == 1)
+		else if (_lauta[aR][aS] == ms && lR == 4 && aR == 6)
 		{
 			kaksoisaskelSarakkeella = lS;
 		}
@@ -142,47 +134,47 @@ void Asema::paivitaAsema(Siirto *siirto)
 		}
 
 		// Laittaa talteen otetun nappulan uuteen ruutuun
-		_lauta[lR][lS] = _lauta[aR][aS];
-
-		// Ohestaly�nti on tyhj��n ruutuun. Vieress� oleva (sotilas) poistetaan.
 
 		//// Katsotaan jos nappula on sotilas ja rivi on p��tyrivi niin ei vaihdeta nappulaa
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym�n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
 
-		//
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l�htenyt nappula
+		if (!(_lauta[aR][aS] == vs && lR == 7) && !(_lauta[aR][aS] == ms && lR == 0))
+		{
+			_lauta[lR][lS] = _lauta[aR][aS];
+		}
 		_lauta[aR][aS] = NULL;
 	}
 
 	// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v�reille)
-	if (aR == 7 && aS == 4)
+	if (_lauta[aR][aS] == vk && !_onkoValkeaKuningasLiikkunut)
 	{
 		_onkoValkeaKuningasLiikkunut = true;
 	}
-	else if (aR == 0 && aS == 4)
+	else if (_lauta[aR][aS] == mk && !_onkoMustaKuningasLiikkunut)
 	{
 		_onkoMustaKuningasLiikkunut = true;
 	}
 
 	// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v�reille ja molemmille torneille)
-	if (aR == 7)
+	if (_lauta[aR][aS] == vt)
 	{
-		if (aS == 0)
+		if (aS == 0 && !_onkoValkeaDTliikkunut)
 		{
 			_onkoValkeaDTliikkunut = true;
 		}
-		else if (aS == 7)
+		else if (aS == 7 && !_onkoValkeaKTliikkunut)
 		{
 			_onkoValkeaKTliikkunut = true;
 		}
 	}
-	else if (aR == 0)
+	else if (_lauta[aR][aS] == mt)
 	{
-		if (aS == 0)
+		if (aS == 0 && !_onkoMustaDTliikkunut)
 		{
 			_onkoMustaDTliikkunut = true;
 		}
-		else if (aS == 7)
+		else if (aS == 7 && !_onkoMustaKTliikkunut)
 		{
 			_onkoMustaKTliikkunut = true;
 		}
