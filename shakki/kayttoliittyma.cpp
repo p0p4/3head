@@ -8,17 +8,14 @@
 
 using namespace std;
 
+Kayttoliittyma *Kayttoliittyma::instance = 0;
 
-Kayttoliittyma* Kayttoliittyma::instance = 0;
-
-
-Kayttoliittyma* Kayttoliittyma::getInstance()
+Kayttoliittyma *Kayttoliittyma::getInstance()
 {
-	if (instance == 0)
-		instance = new Kayttoliittyma();
-	return instance;
+    if (instance == 0)
+        instance = new Kayttoliittyma();
+    return instance;
 }
-
 
 void Kayttoliittyma::piirraLauta()
 {
@@ -26,33 +23,28 @@ void Kayttoliittyma::piirraLauta()
     _setmode(_fileno(stdout), _O_U16TEXT);
 
     // Piirret��n lauta
-    for (int i = 0; i < 8; i++) {
+    for (int i = 7; i >= 0; i--)
+    {
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
-        wcout << 8 - i << L" ";
-        for (int j = 0; j < 8; j++) {
-            Nappula* nappula = _asema->_lauta[i][j];
-            if (nappula == 0) {
-                if (j % 2 == 0 && i % 2 != 0 || j % 2 != 0 && i % 2 == 0)
-                {
-                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | 0 | 0 | 0);
-                }
-                else
-                {
-                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
-                }
+        wcout << i + 1 << L" ";
+
+        for (int j = 0; j < 8; j++)
+        {
+            Nappula *nappula = _asema->_lauta[i][j];
+
+            if (j % 2 == 0 && i % 2 != 0 || j % 2 != 0 && i % 2 == 0)
+            {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | 0 | 0 | 0);
+            }
+            else
+            {
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
+            }
+
+            if (nappula == 0)
                 wcout << L"   ";
-            }
-            else {
-                if (j % 2 == 0 && i % 2 != 0 || j % 2 != 0 && i % 2 == 0)
-                {
-                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | 0 | 0 | 0);
-                }
-                else
-                {
-                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
-                }
+            else
                 wcout << " " << nappula->getUnicode() << " ";
-            }
         }
         wcout << L"\n";
     }
@@ -60,11 +52,10 @@ void Kayttoliittyma::piirraLauta()
     wcout << L"   a  b  c  d  e  f  g  h \n";
 }
 
-
 /*
-	Aliohjelma tarkistaa että käyttäjän antama syöte siirroksi on 
-	muodollisesti korrekti (ei tarkista aseman laillisuutta)
-	Ottaa irti myös nappulan kirjaimen (K/D/L/R/T), tarkistaa että kirjain korrekti
+    Aliohjelma tarkistaa että käyttäjän antama syöte siirroksi on
+    muodollisesti korrekti (ei tarkista aseman laillisuutta)
+    Ottaa irti myös nappulan kirjaimen (K/D/L/R/T), tarkistaa että kirjain korrekti
 */
 Siirto Kayttoliittyma::annaVastustajanSiirto()
 {
@@ -74,12 +65,10 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 
     int asciiConversionChar = 97;
     int asciiConversionNum = 49;
-    int flipBoardConstant = 7;
 
     wcout << "Anna siirto." << endl;
     string siirtoStr;
     cin >> siirtoStr;
-
 
     while (siirtoStr.length() > 6 || (siirtoStr.length() < 5 && siirtoStr.length() != 3))
     {
@@ -88,15 +77,14 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
         wcout << "Anna siirto." << endl;
         cin >> siirtoStr;
     }
-    
 
     if (siirtoStr.length() == 6)
     {
         alku.setSarake(int(siirtoStr[1]) - asciiConversionChar);
-        alku.setRivi(flipBoardConstant - ((int)siirtoStr[2] - asciiConversionNum));
+        alku.setRivi((int)siirtoStr[2] - asciiConversionNum);
 
         loppu.setSarake(int(siirtoStr[4]) - asciiConversionChar);
-        loppu.setRivi(flipBoardConstant - ((int)siirtoStr[5] - asciiConversionNum));
+        loppu.setRivi((int)siirtoStr[5] - asciiConversionNum);
 
         if ((alku.getRivi() < 0 || alku.getRivi() > 7) || (alku.getSarake() < 0 || alku.getSarake() > 7) || (loppu.getRivi() < 0 || loppu.getRivi() > 7) || (loppu.getSarake() < 0 || loppu.getSarake() > 7))
         {
@@ -111,10 +99,10 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
     else if (siirtoStr.length() == 5 && siirtoStr[0] != 'O')
     {
         alku.setSarake(int(siirtoStr[0]) - asciiConversionChar);
-        alku.setRivi(flipBoardConstant - ((int)siirtoStr[1] - asciiConversionNum));
+        alku.setRivi((int)siirtoStr[1] - asciiConversionNum);
 
         loppu.setSarake(int(siirtoStr[3]) - asciiConversionChar);
-        loppu.setRivi(flipBoardConstant - ((int)siirtoStr[4] - asciiConversionNum));
+        loppu.setRivi((int)siirtoStr[4] - asciiConversionNum);
 
         if ((alku.getRivi() < 0 || alku.getRivi() > 7) || (alku.getSarake() < 0 || alku.getSarake() > 7) || (loppu.getRivi() < 0 || loppu.getRivi() > 7) || (loppu.getSarake() < 0 || loppu.getSarake() > 7))
         {
@@ -130,21 +118,17 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
     {
         Siirto siirtoTemp(false, true);
         siirto = siirtoTemp;
-
     }
     else if (siirtoStr == "O-O")
     {
         Siirto siirtoTemp(true, false);
         siirto = siirtoTemp;
-
     }
 
-
-	return siirto;
+    return siirto;
 }
-
 
 int Kayttoliittyma::kysyVastustajanVari()
 {
-	return 0;
+    return 0;
 }
