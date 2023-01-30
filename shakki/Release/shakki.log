@@ -1,1 +1,16 @@
-﻿
+﻿  asema.cpp
+\\Mac\Home\Documents\Projects\3head\shakki\asema.cpp(91,4): error C3861: 'paivitaAsemat': identifier not found
+\\Mac\Home\Documents\Projects\3head\shakki\asema.cpp(94,4): error C3861: 'paivitaAsemat': identifier not found
+\\Mac\Home\Documents\Projects\3head\shakki\asema.cpp(100,4): error C3861: 'paivitaAsemat': identifier not found
+\\Mac\Home\Documents\Projects\3head\shakki\asema.cpp(103,4): error C3861: 'paivitaAsemat': identifier not found
+\\Mac\Home\Documents\Projects\3head\shakki\asema.cpp(113,4): error C3861: 'paivitaAsemat': identifier not found
+\\Mac\Home\Documents\Projects\3head\shakki\asema.cpp(116,4): error C3861: 'paivitaAsemat': identifier not found
+\\Mac\Home\Documents\Projects\3head\shakki\asema.cpp(122,4): error C3861: 'paivitaAsemat': identifier not found
+\\Mac\Home\Documents\Projects\3head\shakki\asema.cpp(125,4): error C3861: 'paivitaAsemat': identifier not found
+  kayttoliittyma.cpp
+  main.cpp
+  nappula.cpp
+  peli.cpp
+  ruutu.cpp
+  siirto.cpp
+  vastustaja.cpp

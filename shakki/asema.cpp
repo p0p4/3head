@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #include "asema.h"
-#include "minMaxPaluu.h"
+#include "minmaxpaluu.h"
 #include "nappula.h"
 #include "ruutu.h"
 using namespace std;
@@ -85,42 +85,20 @@ void Asema::paivitaAsema(Siirto *siirto)
 	// Tarkastetaan on siirto lyhyt linna
 	if (siirto->onkoLyhytLinna())
 	{
-		if (getSiirtovuoro() == 0)
-		{
-			Siirto *tmp = new Siirto(Ruutu(7, 4), Ruutu(7, 6));
-			paivitaAsemat(tmp);
-			setSiirtovuoro(1 - getSiirtovuoro());
-			tmp = new Siirto(Ruutu(7, 7), Ruutu(7, 5));
-			paivitaAsemat(tmp);
-		}
-		else
-		{
-			Siirto *tmp = new Siirto(Ruutu(0, 4), Ruutu(0, 6));
-			paivitaAsemat(tmp);
-			setSiirtovuoro(1 - getSiirtovuoro());
-			tmp = new Siirto(Ruutu(0, 7), Ruutu(0, 5));
-			paivitaAsemat(tmp);
-		}
+		int row = 7 * getSiirtovuoro();
+		_lauta[row][6] = _lauta[row][4];
+		_lauta[row][5] = _lauta[row][7];
+		_lauta[row][4] = NULL;
+		_lauta[row][7] = NULL;
 	}
 	// onko pitk� linna
 	else if (siirto->onkoPitkalinna())
 	{
-		if (getSiirtovuoro() == 0)
-		{
-			Siirto *tmp = new Siirto(Ruutu(7, 4), Ruutu(7, 2));
-			paivitaAsemat(tmp);
-			setSiirtovuoro(1 - getSiirtovuoro());
-			tmp = new Siirto(Ruutu(7, 0), Ruutu(7, 3));
-			paivitaAsemat(tmp);
-		}
-		else
-		{
-			Siirto *tmp = new Siirto(Ruutu(0, 4), Ruutu(0, 2));
-			paivitaAsemat(tmp);
-			setSiirtovuoro(1 - getSiirtovuoro());
-			tmp = new Siirto(Ruutu(0, 0), Ruutu(0, 3));
-			paivitaAsemat(tmp);
-		}
+		int row = 7 * getSiirtovuoro();
+		_lauta[row][2] = _lauta[row][4];
+		_lauta[row][3] = _lauta[row][0];
+		_lauta[row][4] = NULL;
+		_lauta[row][0] = NULL;
 	}
 	// Kaikki muut siirrot
 	else
@@ -142,11 +120,11 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
-		if (_lauta[lR][lS] == vs && lR == 4 && aR == 6)
+		if (_lauta[aR][aS] == vs && lR == 3 && aR == 1)
 		{
 			kaksoisaskelSarakkeella = lS;
 		}
-		else if (_lauta[lR][lS] == ms && lR == 3 && aR == 1)
+		else if (_lauta[aR][aS] == ms && lR == 4 && aR == 6)
 		{
 			kaksoisaskelSarakkeella = lS;
 		}
@@ -169,11 +147,11 @@ void Asema::paivitaAsema(Siirto *siirto)
 	}
 
 	// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v�reille)
-	if (_lauta[aR][aS] == vk)
+	if (_lauta[aR][aS] == vk && !_onkoValkeaKuningasLiikkunut)
 	{
 		_onkoValkeaKuningasLiikkunut = true;
 	}
-	else if (_lauta[aR][aS] == mk)
+	else if (_lauta[aR][aS] == mk && !_onkoMustaKuningasLiikkunut)
 	{
 		_onkoMustaKuningasLiikkunut = true;
 	}
@@ -181,22 +159,22 @@ void Asema::paivitaAsema(Siirto *siirto)
 	// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v�reille ja molemmille torneille)
 	if (_lauta[aR][aS] == vt)
 	{
-		if (aS == 0)
+		if (aS == 0 && !_onkoValkeaDTliikkunut)
 		{
 			_onkoValkeaDTliikkunut = true;
 		}
-		else if (aS == 7)
+		else if (aS == 7 && !_onkoValkeaKTliikkunut)
 		{
 			_onkoValkeaKTliikkunut = true;
 		}
 	}
 	else if (_lauta[aR][aS] == mt)
 	{
-		if (aS == 0)
+		if (aS == 0 && !_onkoMustaDTliikkunut)
 		{
 			_onkoMustaDTliikkunut = true;
 		}
-		else if (aS == 7)
+		else if (aS == 7 && !_onkoMustaKTliikkunut)
 		{
 			_onkoMustaKTliikkunut = true;
 		}

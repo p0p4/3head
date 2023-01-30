@@ -1,10 +1,13 @@
 ﻿  asema.cpp
+\\Mac\Home\Documents\Projects\3head\shakki\asema.h(5,10): fatal  error C1083: Cannot open include file: 'minmfaxpaluu.h': No such file or directory
   kayttoliittyma.cpp
+\\Mac\Home\Documents\Projects\3head\shakki\asema.h(5,10): fatal  error C1083: Cannot open include file: 'minmfaxpaluu.h': No such file or directory
   main.cpp
+\\Mac\Home\Documents\Projects\3head\shakki\asema.h(5,10): fatal  error C1083: Cannot open include file: 'minmfaxpaluu.h': No such file or directory
   nappula.cpp
+\\Mac\Home\Documents\Projects\3head\shakki\asema.h(5,10): fatal  error C1083: Cannot open include file: 'minmfaxpaluu.h': No such file or directory
   peli.cpp
   ruutu.cpp
   siirto.cpp
   vastustaja.cpp
   Generating Code...
-  shakki.vcxproj -> Z:\TiVi\shakki\3head\Debug\shakki.exe

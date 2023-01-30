@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>\\Mac\Home\Documents\Projects\3head\shakki\</FILEPATH>
+      <FILENAME>peli.cpp</FILENAME>
+      <LINE>6</LINE>
+      <COLUMN>6</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Peli::_koneenVari' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Peli::{ctor}</FUNCTION>
+    <DECORATED>??0Peli@@QAE@H@Z</DECORATED>
+    <FUNCLINE>6</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Peli::_koneenVari</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

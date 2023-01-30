@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>\\Mac\Home\Documents\Projects\3head\shakki\</FILEPATH>
+      <FILENAME>ruutu.h</FILENAME>
+      <LINE>8</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Ruutu::_sarake' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Ruutu::{ctor}</FUNCTION>
+    <DECORATED>??0Ruutu@@QAE@XZ</DECORATED>
+    <FUNCLINE>8</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Ruutu::_sarake</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>\\Mac\Home\Documents\Projects\3head\shakki\</FILEPATH>
+      <FILENAME>ruutu.h</FILENAME>
+      <LINE>8</LINE>
+      <COLUMN>1</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'Ruutu::_rivi' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>Ruutu::{ctor}</FUNCTION>
+    <DECORATED>??0Ruutu@@QAE@XZ</DECORATED>
+    <FUNCLINE>8</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>Ruutu::_rivi</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

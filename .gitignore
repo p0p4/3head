@@ -8,3 +8,9 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+Debug/
+Release/
+shakki/Debug
+shakki/Release
+shakki/shakki.vcxproj.user
+UpgradeLog.htm
