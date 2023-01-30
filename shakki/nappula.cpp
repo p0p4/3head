@@ -348,6 +348,18 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 1, ruutu->getSarake() - 1));
 			lista.push_back(siirto);
 		}
+
+		if (asema->_lauta[ruutu->getRivi()][ruutu->getSarake() + 1]->getKoodi() == MS && asema->kaksoisaskelSarakkeella == ruutu->getSarake() + 1 && ruutu->getRivi() == 4)
+		{
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 1, ruutu->getSarake() + 1));
+			lista.push_back(siirto);
+		}
+
+		if (asema->_lauta[ruutu->getRivi()][ruutu->getSarake() - 1]->getKoodi() == MS && asema->kaksoisaskelSarakkeella == ruutu->getSarake() - 1 && ruutu->getRivi() == 4)
+		{
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 1, ruutu->getSarake() - 1));
+			lista.push_back(siirto);
+		}
 	}
 
 
@@ -377,9 +389,16 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			lista.push_back(siirto);
 		}
 
-		if (asema->_lauta[ruutu->getRivi()][ruutu->getSarake() - 1]->getKoodi() == vs)
+		if (asema->_lauta[ruutu->getRivi()][ruutu->getSarake() + 1]->getKoodi() == VS && asema->kaksoisaskelSarakkeella == ruutu->getSarake() + 1 &&  ruutu->getRivi() == 3)
 		{
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 1, ruutu->getSarake() + 1));
+			lista.push_back(siirto);
+		}
 
+		if (asema->_lauta[ruutu->getRivi()][ruutu->getSarake() - 1]->getKoodi() == VS && asema->kaksoisaskelSarakkeella == ruutu->getSarake() - 1 && ruutu->getRivi() == 3)
+		{
+			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 1, ruutu->getSarake() - 1));
+			lista.push_back(siirto);
 		}
 
 	}
