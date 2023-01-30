@@ -330,7 +330,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 1, ruutu->getSarake()));
 			lista.push_back(siirto);
 
-			if (asema->_lauta[ruutu->getRivi() + 2][ruutu->getSarake()] == NULL && ruutu->getRivi() == 6)
+			if (asema->_lauta[ruutu->getRivi() + 2][ruutu->getSarake()] == NULL && ruutu->getRivi() == 1)
 			{
 				Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() + 2, ruutu->getSarake()));
 				lista.push_back(siirto);
@@ -358,7 +358,7 @@ void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, 
 			Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 1, ruutu->getSarake()));
 			lista.push_back(siirto);
 
-			if (asema->_lauta[ruutu->getRivi() - 2][ruutu->getSarake()] == NULL && ruutu->getRivi() == 1)
+			if (asema->_lauta[ruutu->getRivi() - 2][ruutu->getSarake()] == NULL && ruutu->getRivi() == 6)
 			{
 				Siirto siirto(Ruutu(ruutu->getRivi(), ruutu->getSarake()), Ruutu(ruutu->getRivi() - 2, ruutu->getSarake()));
 				lista.push_back(siirto);
