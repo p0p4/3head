@@ -30,9 +30,9 @@ void Kayttoliittyma::piirraLauta()
 
         for (int j = 0; j < 8; j++)
         {
-            Nappula *nappula = _asema->_lauta[i][j];
+            Nappula *nappula = _asema->_lauta[j][i];
 
-            if (j % 2 == 0 && i % 2 != 0 || j % 2 != 0 && i % 2 == 0)
+            if ((i + j) % 2 == 0)
             {
                 SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | 0 | 0 | 0);
             }

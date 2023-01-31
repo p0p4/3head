@@ -1,16 +1,16 @@
-#include <iostream>
+﻿#include <iostream>
 #include "asema.h"
 #include "minmaxpaluu.h"
 #include "nappula.h"
 #include "ruutu.h"
 using namespace std;
 
-Nappula* Asema::vk = new Kuningas(L"\u2654", 0, VK);
-Nappula* Asema::vd = new Daami(L"\u2655", 0, VD);
-Nappula* Asema::vt = new Torni(L"\u2656", 0, VT);
-Nappula* Asema::vl = new Lahetti(L"\u2657", 0, VL);
-Nappula* Asema::vr = new Ratsu(L"\u2658", 0, VR);
-Nappula* Asema::vs = new Sotilas(L"\u2659", 0, VS);
+Nappula *Asema::vk = new Kuningas(L"\u2654", 0, VK);
+Nappula *Asema::vd = new Daami(L"\u2655", 0, VD);
+Nappula *Asema::vt = new Torni(L"\u2656", 0, VT);
+Nappula *Asema::vl = new Lahetti(L"\u2657", 0, VL);
+Nappula *Asema::vr = new Ratsu(L"\u2658", 0, VR);
+Nappula *Asema::vs = new Sotilas(L"\u2659", 0, VS);
 
 Nappula *Asema::mk = new Kuningas(L"\u265A", 1, MK);
 Nappula *Asema::md = new Daami(L"\u265B", 1, MD);
@@ -29,33 +29,33 @@ Asema::Asema()
 		}
 	}
 
-	_lauta[7][0] = mt;
-	_lauta[7][1] = mr;
-	_lauta[7][2] = ml;
-	_lauta[7][3] = md;
-	_lauta[7][4] = mk;
-	_lauta[7][5] = ml;
-	_lauta[7][6] = mr;
+	_lauta[0][7] = mt;
+	_lauta[1][7] = mr;
+	_lauta[2][7] = ml;
+	_lauta[3][7] = md;
+	_lauta[4][7] = mk;
+	_lauta[5][7] = ml;
+	_lauta[6][7] = mr;
 	_lauta[7][7] = mt;
 
 	for (int i = 0; i < 8; i++)
 	{
-		_lauta[6][i] = ms;
+		_lauta[i][6] = ms;
 	}
 
 	for (int i = 0; i < 8; i++)
 	{
-		_lauta[1][i] = vs;
+		_lauta[i][1] = vs;
 	}
 
 	_lauta[0][0] = vt;
-	_lauta[0][1] = vr;
-	_lauta[0][2] = vl;
-	_lauta[0][3] = vd;
-	_lauta[0][4] = vk;
-	_lauta[0][5] = vl;
-	_lauta[0][6] = vr;
-	_lauta[0][7] = vt;
+	_lauta[1][0] = vr;
+	_lauta[2][0] = vl;
+	_lauta[3][0] = vd;
+	_lauta[4][0] = vk;
+	_lauta[5][0] = vl;
+	_lauta[6][0] = vr;
+	_lauta[7][0] = vt;
 
 	setSiirtovuoro(0);
 
@@ -69,15 +69,14 @@ Asema::Asema()
 
 void Asema::paivitaAsema(Siirto *siirto)
 {
-	int aR, aS, lR, lS;
+	int aS, aR;
+	int lS, lR;
 
-	// alku- ja loppurivi
-	aR = siirto->getAlkuruutu().getRivi();
-	lR = siirto->getLoppuruutu().getRivi();
-
-	// alku- ja loppusarake
 	aS = siirto->getAlkuruutu().getSarake();
+	aR = siirto->getAlkuruutu().getRivi();
+
 	lS = siirto->getLoppuruutu().getSarake();
+	lR = siirto->getLoppuruutu().getRivi();
 
 	// Kaksoisaskel-lippu on oletusarvoisesti pois p��lt�.
 	// Asetetaan my�hemmin, jos tarvii.
@@ -85,20 +84,20 @@ void Asema::paivitaAsema(Siirto *siirto)
 	// Tarkastetaan on siirto lyhyt linna
 	if (siirto->onkoLyhytLinna())
 	{
-		int row = 7 * getSiirtovuoro();
-		_lauta[row][6] = _lauta[row][4];
-		_lauta[row][5] = _lauta[row][7];
-		_lauta[row][4] = NULL;
-		_lauta[row][7] = NULL;
+		int rivi = 7 * getSiirtovuoro();
+		_lauta[6][rivi] = _lauta[4][rivi];
+		_lauta[5][rivi] = _lauta[7][rivi];
+		_lauta[4][rivi] = NULL;
+		_lauta[7][rivi] = NULL;
 	}
 	// onko pitk� linna
 	else if (siirto->onkoPitkalinna())
 	{
-		int row = 7 * getSiirtovuoro();
-		_lauta[row][2] = _lauta[row][4];
-		_lauta[row][3] = _lauta[row][0];
-		_lauta[row][4] = NULL;
-		_lauta[row][0] = NULL;
+		int rivi = 7 * getSiirtovuoro();
+		_lauta[2][rivi] = _lauta[4][rivi];
+		_lauta[3][rivi] = _lauta[0][rivi];
+		_lauta[4][rivi] = NULL;
+		_lauta[0][rivi] = NULL;
 	}
 	// Kaikki muut siirrot
 	else
@@ -108,23 +107,23 @@ void Asema::paivitaAsema(Siirto *siirto)
 		// Ohestaly�nti on tyhj��n ruutuun. Vieress� oleva (sotilas) poistetaan.
 		if (kaksoisaskelSarakkeella != -1)
 		{
-			if (_lauta[aR][aS] == vs && lS == kaksoisaskelSarakkeella)
+			if (_lauta[aS][aR] == vs && lS == kaksoisaskelSarakkeella)
 			{
-				_lauta[lR - 1][lS] = NULL;
+				_lauta[lS][lR - 1] = NULL;
 			}
-			else if (_lauta[aR][aS] == ms && lS == kaksoisaskelSarakkeella)
+			else if (_lauta[aS][aR] == ms && lS == kaksoisaskelSarakkeella)
 			{
-				_lauta[lR + 1][lS] = NULL;
+				_lauta[lS][lR + 1] = NULL;
 			}
 		}
 
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
-		if (_lauta[aR][aS] == vs && lR == 3 && aR == 1)
+		if (_lauta[aS][aR] == vs && lR == 3 && aR == 1)
 		{
 			kaksoisaskelSarakkeella = lS;
 		}
-		else if (_lauta[aR][aS] == ms && lR == 4 && aR == 6)
+		else if (_lauta[aS][aR] == ms && lR == 4 && aR == 6)
 		{
 			kaksoisaskelSarakkeella = lS;
 		}
@@ -139,25 +138,25 @@ void Asema::paivitaAsema(Siirto *siirto)
 		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym�n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
 
 		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l�htenyt nappula
-		if (!(_lauta[aR][aS] == vs && lR == 7) && !(_lauta[aR][aS] == ms && lR == 0))
+		if (!(_lauta[aS][aR] == vs && lR == 7) && !(_lauta[aS][aR] == ms && lR == 0))
 		{
-			_lauta[lR][lS] = _lauta[aR][aS];
+			_lauta[lS][lR] = _lauta[aS][aR];
 		}
-		_lauta[aR][aS] = NULL;
+		_lauta[aS][aR] = NULL;
 	}
 
 	// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v�reille)
-	if (_lauta[aR][aS] == vk && !_onkoValkeaKuningasLiikkunut)
+	if (_lauta[aS][aR] == vk && !_onkoValkeaKuningasLiikkunut)
 	{
 		_onkoValkeaKuningasLiikkunut = true;
 	}
-	else if (_lauta[aR][aS] == mk && !_onkoMustaKuningasLiikkunut)
+	else if (_lauta[aS][aR] == mk && !_onkoMustaKuningasLiikkunut)
 	{
 		_onkoMustaKuningasLiikkunut = true;
 	}
 
 	// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v�reille ja molemmille torneille)
-	if (_lauta[aR][aS] == vt)
+	if (_lauta[aS][aR] == vt)
 	{
 		if (aS == 0 && !_onkoValkeaDTliikkunut)
 		{
@@ -168,7 +167,7 @@ void Asema::paivitaAsema(Siirto *siirto)
 			_onkoValkeaKTliikkunut = true;
 		}
 	}
-	else if (_lauta[aR][aS] == mt)
+	else if (_lauta[aS][aR] == mt)
 	{
 		if (aS == 0 && !_onkoMustaDTliikkunut)
 		{
@@ -356,16 +355,14 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto> &lista, int vari)
 
 void Asema::annaLaillisetSiirrot(std::list<Siirto> &lista)
 {
-	 
-	/*for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			if (_lauta[i][j] != NULL && _lauta[i][j]->getVari() == _siirtovuoro)
+			if (_lauta[j][i] != NULL && _lauta[j][i]->getVari() == _siirtovuoro)
 			{
-				_lauta[i][j]->annaSiirrot(lista, new Ruutu(i, j), this, _lauta[i][j]->getVari());
+				_lauta[j][i]->annaSiirrot(lista, new Ruutu(j, i), this, _lauta[j][i]->getVari());
 			}
 		}
-	} */
-
+	}
 }
