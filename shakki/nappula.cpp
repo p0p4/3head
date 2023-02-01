@@ -11,12 +11,12 @@ Nappula::Nappula(wstring unicode, int vari, int koodi)
 	setKoodi(koodi);
 }
 
-void Nappula::siirtoSuuntaan(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, int vari, int sarakeMuutos, int riviMuutos, int maxSuuntaAskelta)
+void Nappula::siirrotSuuntaan(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, int vari, int sarakeMuutos, int riviMuutos, int maxAskelta)
 {
 	int sarake = ruutu->getSarake();
 	int rivi = ruutu->getRivi();
 
-	for (int i = 1; i <= maxSuuntaAskelta; i++)
+	for (int i = 0; i < maxAskelta; i++)
 	{
 		sarake += sarakeMuutos;
 		rivi += riviMuutos;
@@ -35,7 +35,6 @@ void Nappula::siirtoSuuntaan(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asem
 			{
 				Siirto siirto(Ruutu(ruutu->getSarake(), ruutu->getRivi()), Ruutu(sarake, rivi));
 				lista.push_back(siirto);
-				return;
 			}
 			break;
 		}
@@ -44,30 +43,30 @@ void Nappula::siirtoSuuntaan(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asem
 
 void Torni::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, int vari)
 {
-	siirtoSuuntaan(lista, ruutu, asema, vari, 1, 0, 8);
-	siirtoSuuntaan(lista, ruutu, asema, vari, -1, 0, 8);
-	siirtoSuuntaan(lista, ruutu, asema, vari, 0, 1, 8);
-	siirtoSuuntaan(lista, ruutu, asema, vari, 0, -1, 8);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 1, 0, 7);
+	siirrotSuuntaan(lista, ruutu, asema, vari, -1, 0, 7);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 0, 1, 7);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 0, -1, 7);
 }
 
 void Ratsu::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, int vari)
 {
-	siirtoSuuntaan(lista, ruutu, asema, vari, 1, 2, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, -1, 2, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, 1, -2, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, -1, -2, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, 2, 1, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, -2, 1, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, 2, -1, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, -2, -1, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 1, 2, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, -1, 2, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 1, -2, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, -1, -2, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 2, 1, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, -2, 1, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 2, -1, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, -2, -1, 1);
 }
 
 void Lahetti::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, int vari)
 {
-	siirtoSuuntaan(lista, ruutu, asema, vari, 1, 1, 8);
-	siirtoSuuntaan(lista, ruutu, asema, vari, -1, 1, 8);
-	siirtoSuuntaan(lista, ruutu, asema, vari, 1, -1, 8);
-	siirtoSuuntaan(lista, ruutu, asema, vari, -1, -1, 8);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 1, 1, 7);
+	siirrotSuuntaan(lista, ruutu, asema, vari, -1, 1, 7);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 1, -1, 7);
+	siirrotSuuntaan(lista, ruutu, asema, vari, -1, -1, 7);
 }
 
 void Daami::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, int vari)
@@ -78,20 +77,15 @@ void Daami::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, in
 
 void Kuningas::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, int vari)
 {
-	/*perusidea on ett� kaikki viereiset ruudut ovat sallittuja. kuten tornilla ja l�hetill�,
-	oman nappulan p��lle ei voi menn� ja vastustajan nappulan voi sy�d�.
+	siirrotSuuntaan(lista, ruutu, asema, vari, 1, 0, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, -1, 0, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 0, 1, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 0, -1, 1);
 
-	Kaikki muu kuninkaaseen liittyv� tarkistus tehd��n eri paikassa*/
-
-	siirtoSuuntaan(lista, ruutu, asema, vari, 1, 0, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, -1, 0, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, 0, 1, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, 0, -1, 1);
-
-	siirtoSuuntaan(lista, ruutu, asema, vari, 1, 1, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, -1, 1, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, 1, -1, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, -1, -1, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 1, 1, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, -1, 1, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, 1, -1, 1);
+	siirrotSuuntaan(lista, ruutu, asema, vari, -1, -1, 1);
 }
 
 void Sotilas::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, int vari)
@@ -99,36 +93,39 @@ void Sotilas::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, 
 	int sarake = ruutu->getSarake();
 	int rivi = ruutu->getRivi();
 
+	// eteenpäin yksi
 	if (asema->_lauta[sarake][rivi + (vari == 0 ? 1 : -1)] == NULL)
 	{
-		siirtoSuuntaan(lista, ruutu, asema, vari, 0, vari == 0 ? 1 : -1, 1);
+		siirrotSuuntaan(lista, ruutu, asema, vari, 0, vari == 0 ? 1 : -1, 1);
+		// eteenpäin kaksi
+		if (rivi == (vari == 0 ? 1 : 6) && asema->_lauta[sarake][rivi + (vari == 0 ? 2 : -2)] == NULL)
+		{
+			siirrotSuuntaan(lista, ruutu, asema, vari, 0, vari == 0 ? 2 : -2, 1);
+		}
 	}
 
-	if (rivi == (vari == 0 ? 1 : 6) && asema->_lauta[sarake][rivi + (vari == 0 ? 2 : -2)] == NULL)
+	// viistoon
+	if (asema->_lauta[sarake + 1][rivi + (vari == 0 ? 1 : -1)] != NULL)
 	{
-		siirtoSuuntaan(lista, ruutu, asema, vari, 0, vari == 0 ? 2 : -2, 1);
+		siirrotSuuntaan(lista, ruutu, asema, vari, 1, vari == 0 ? 1 : -1, 1);
+	}
+	if (asema->_lauta[sarake - 1][rivi + (vari == 0 ? 1 : -1)] != NULL)
+	{
+		siirrotSuuntaan(lista, ruutu, asema, vari, -1, vari == 0 ? 1 : -1, 1);
 	}
 
+	// en passant
 	if (asema->kaksoisaskelSarakkeella != -1)
 	{
 		if (asema->kaksoisaskelSarakkeella == sarake - 1)
 		{
-			siirtoSuuntaan(lista, ruutu, asema, vari, -1, vari == 0 ? 1 : -1, 1);
+			siirrotSuuntaan(lista, ruutu, asema, vari, -1, vari == 0 ? 1 : -1, 1);
 		}
 		else if (asema->kaksoisaskelSarakkeella == sarake + 1)
 		{
-			siirtoSuuntaan(lista, ruutu, asema, vari, 1, vari == 0 ? 1 : -1, 1);
+			siirrotSuuntaan(lista, ruutu, asema, vari, 1, vari == 0 ? 1 : -1, 1);
 		}
 	}
-
-	if (asema->_lauta[sarake + 1][rivi + (vari == 0 ? 1 : -1)] == NULL &&
-		asema->_lauta[sarake - 1][rivi + (vari == 0 ? 1 : -1)] == NULL)
-	{
-		return;
-	}
-
-	siirtoSuuntaan(lista, ruutu, asema, vari, 1, vari == 0 ? 1 : -1, 1);
-	siirtoSuuntaan(lista, ruutu, asema, vari, -1, vari == 0 ? 1 : -1, 1);
 }
 
 void Sotilas::lisaaSotilaanKorotukset(Siirto *siirto, std::list<Siirto> &lista, Asema *asema)

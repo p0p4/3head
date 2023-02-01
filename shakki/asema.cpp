@@ -146,11 +146,11 @@ void Asema::paivitaAsema(Siirto *siirto)
 	}
 
 	// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v�reille)
-	if (_lauta[aS][aR] == vk && !_onkoValkeaKuningasLiikkunut)
+	if (_lauta[aS][aR] == vk && !getOnkoValkeaKuningasLiikkunut())
 	{
 		_onkoValkeaKuningasLiikkunut = true;
 	}
-	else if (_lauta[aS][aR] == mk && !_onkoMustaKuningasLiikkunut)
+	else if (_lauta[aS][aR] == mk && !getOnkoMustaKuningasLiikkunut())
 	{
 		_onkoMustaKuningasLiikkunut = true;
 	}
@@ -158,22 +158,22 @@ void Asema::paivitaAsema(Siirto *siirto)
 	// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v�reille ja molemmille torneille)
 	if (_lauta[aS][aR] == vt)
 	{
-		if (aS == 0 && !_onkoValkeaDTliikkunut)
+		if (aS == 0 && !getOnkoValkeaDTliikkunut())
 		{
 			_onkoValkeaDTliikkunut = true;
 		}
-		else if (aS == 7 && !_onkoValkeaKTliikkunut)
+		else if (aS == 7 && !getOnkoValkeaKTliikkunut())
 		{
 			_onkoValkeaKTliikkunut = true;
 		}
 	}
 	else if (_lauta[aS][aR] == mt)
 	{
-		if (aS == 0 && !_onkoMustaDTliikkunut)
+		if (aS == 0 && !getOnkoMustaDTliikkunut())
 		{
 			_onkoMustaDTliikkunut = true;
 		}
-		else if (aS == 7 && !_onkoMustaKTliikkunut)
+		else if (aS == 7 && !getOnkoMustaKTliikkunut())
 		{
 			_onkoMustaKTliikkunut = true;
 		}

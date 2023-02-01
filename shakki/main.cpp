@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 #include "kayttoliittyma.h"
-#include "Siirto.h"
+#include "siirto.h"
 #include "asema.h"
 
 using namespace std;
@@ -33,13 +33,12 @@ int main()
 		wcout << "\n";
 		// Tarkasta onko peli loppu?
 		asema.annaLaillisetSiirrot(lista);
-		// if (lista.size() == 0) {
-		//	lopetus = 0;
-		//	std::wcout << "Peli loppui";
-		//	Siirto siirto;
-		//	continue;
-		// }
-		Siirto siirto;
+		if (lista.size() == 0)
+		{
+			lopetus = 0;
+			std::wcout << "Peli loppui";
+			continue;
+		}
 
 		for (int i = 7; i >= 0; i--)
 		{
@@ -57,19 +56,25 @@ int main()
 			}
 			wcout << "\n";
 		}
-		// if (asema.getSiirtovuoro() == koneenVari) {
-		//	MinMaxPaluu paluu;
-		//	if (koneenVari == 0) {
-		//		paluu = asema.maxi(3);
-		//	}
-		//	else {
-		//		paluu = asema.mini(3);
-		//	}
-		//	siirto = paluu._parasSiirto;
+
+		Siirto siirto;
+		// if (asema.getSiirtovuoro() == koneenVari)
+		// {
+		// 	MinMaxPaluu paluu;
+		// 	if (koneenVari == 0)
+		// 	{
+		// 		paluu = asema.maxi(3);
+		// 	}
+		// 	else
+		// 	{
+		// 		paluu = asema.mini(3);
+		// 	}
+		// 	siirto = paluu._parasSiirto;
 		// }
-		// else {
+		// else
+		// {
 		siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
-		//}
+		// }
 		asema.paivitaAsema(&siirto);
 	}
 

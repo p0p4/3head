@@ -45,7 +45,8 @@ public:
 	int getVari() { return _vari; }
 	int getKoodi() { return _koodi; }
 	void setKoodi(int koodi) { _koodi = koodi; }
-	void siirtoSuuntaan(std::list<Siirto> &lista, Ruutu *, Asema *, int vari, int dx, int dy, int askeleet);
+
+	void siirrotSuuntaan(std::list<Siirto> &lista, Ruutu *, Asema *, int vari, int dx, int dy, int askeleet);
 };
 
 // Torni-aliluokka. Virtuaalinen perint� tarkoittaa, ett� kantaluokka perit��n moniperinn�ss� vain kerran
