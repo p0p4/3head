@@ -17,7 +17,7 @@ Kayttoliittyma *Kayttoliittyma::getInstance()
     return instance;
 }
 
-void Kayttoliittyma::piirraLauta()
+void Kayttoliittyma::piirraLauta(std::list<Siirto> &lista)
 {
     // Asetetaan konsoliin UTF-8
     _setmode(_fileno(stdout), _O_U16TEXT);
@@ -25,7 +25,7 @@ void Kayttoliittyma::piirraLauta()
     // Piirret��n lauta
     for (int i = 7; i >= 0; i--)
     {
-        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
         wcout << i + 1 << L" ";
 
         for (int j = 0; j < 8; j++)
@@ -34,11 +34,20 @@ void Kayttoliittyma::piirraLauta()
 
             if ((i + j) % 2 == 0)
             {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | 0 | 0 | 0);
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 112);
             }
             else
             {
-                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
+                SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 128);
+            }
+
+            // DEBUG: Lailliset siirrot
+            for (Siirto siirto : lista)
+            {
+                if (siirto.getLoppuruutu().getSarake() == j && siirto.getLoppuruutu().getRivi() == i)
+                {
+                    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 160);
+                }
             }
 
             if (nappula == 0)
@@ -46,10 +55,13 @@ void Kayttoliittyma::piirraLauta()
             else
                 wcout << " " << nappula->getUnicode() << " ";
         }
-        wcout << L"\n";
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0);
+        wcout << L".\n";
     }
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), BACKGROUND_INTENSITY | BACKGROUND_RED | BACKGROUND_GREEN | BACKGROUND_BLUE);
-    wcout << L"   a  b  c  d  e  f  g  h \n";
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
+    wcout << L"   a  b  c  d  e  f  g  h ";
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0);
+    wcout << L".\n";
 }
 
 /*
@@ -65,6 +77,8 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 
     int asciiConversionChar = 97;
     int asciiConversionNum = 49;
+
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
     wcout << "Anna siirto." << endl;
     string siirtoStr;

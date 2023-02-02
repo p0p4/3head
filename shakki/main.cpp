@@ -29,32 +29,20 @@ int main()
 	while (lopetus != 0)
 	{
 		lista.clear();
-		Kayttoliittyma::getInstance()->piirraLauta();
 		wcout << "\n";
 		// Tarkasta onko peli loppu?
 		asema.annaLaillisetSiirrot(lista);
+		// DEBUG: Lailliset siirrot
+		Kayttoliittyma::getInstance()->piirraLauta(lista);
+		for (Siirto siirto : lista)
+		{
+			std::wcout << siirto.getLoppuruutu().getSarake() << " " << siirto.getLoppuruutu().getRivi() << endl;
+		}
 		if (lista.size() == 0)
 		{
 			lopetus = 0;
 			std::wcout << "Peli loppui";
 			continue;
-		}
-
-		for (int i = 7; i >= 0; i--)
-		{
-			for (int j = 0; j < 8; j++)
-			{
-				int x = 0;
-				for (Siirto siirto : lista)
-				{
-					if (siirto.getLoppuruutu().getSarake() == j && siirto.getLoppuruutu().getRivi() == i)
-					{
-						x = 1;
-					}
-				}
-				wcout << x << " ";
-			}
-			wcout << "\n";
 		}
 
 		Siirto siirto;
