@@ -92,39 +92,39 @@ void Sotilas::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, 
 {
 	int sarake = ruutu->getSarake();
 	int rivi = ruutu->getRivi();
+	int varinSuunta = (vari == 0 ? 1 : -1);
 
 	// eteenpäin yksi
-	if (asema->_lauta[sarake][rivi + (vari == 0 ? 1 : -1)] == NULL)
+	if (asema->_lauta[sarake][rivi + (1 * varinSuunta)] == NULL)
 	{
-		siirrotSuuntaan(lista, ruutu, asema, vari, 0, vari == 0 ? 1 : -1, 1);
+		siirrotSuuntaan(lista, ruutu, asema, vari, 0, (1 * varinSuunta), 1);
 		// eteenpäin kaksi
-		if (rivi == (vari == 0 ? 1 : 6) && asema->_lauta[sarake][rivi + (vari == 0 ? 2 : -2)] == NULL)
+		if (rivi == (vari == 0 ? 1 : 6) && asema->_lauta[sarake][rivi + (2 * varinSuunta)] == NULL)
 		{
-			siirrotSuuntaan(lista, ruutu, asema, vari, 0, vari == 0 ? 2 : -2, 1);
+			siirrotSuuntaan(lista, ruutu, asema, vari, 0, (2 * varinSuunta), 1);
 		}
 	}
 
 	// viistoon
-	if (asema->_lauta[sarake + 1][rivi + (vari == 0 ? 1 : -1)] != NULL)
+	if (asema->_lauta[sarake + 1][rivi + (1 * varinSuunta)] != NULL)
 	{
-		siirrotSuuntaan(lista, ruutu, asema, vari, 1, vari == 0 ? 1 : -1, 1);
+		siirrotSuuntaan(lista, ruutu, asema, vari, 1, (1 * varinSuunta), 1);
 	}
-	if (asema->_lauta[sarake - 1][rivi + (vari == 0 ? 1 : -1)] != NULL)
+	if (asema->_lauta[sarake - 1][rivi + (1 * varinSuunta)] != NULL)
 	{
-		siirrotSuuntaan(lista, ruutu, asema, vari, -1, vari == 0 ? 1 : -1, 1);
+		siirrotSuuntaan(lista, ruutu, asema, vari, -1, (1 * varinSuunta), 1);
 	}
 
 	// en passant
-	if (asema->kaksoisaskelSarakkeella != -1)
+	if (asema->kaksoisaskelSarakkeella == sarake + 1 && asema->_lauta[sarake + 1][rivi] != NULL &&
+		sarake + 1 < 8 && asema->_lauta[sarake + 1][rivi]->getKoodi() == (vari == 0 ? MS : VS))
 	{
-		if (asema->kaksoisaskelSarakkeella == sarake - 1)
-		{
-			siirrotSuuntaan(lista, ruutu, asema, vari, -1, vari == 0 ? 1 : -1, 1);
-		}
-		else if (asema->kaksoisaskelSarakkeella == sarake + 1)
-		{
-			siirrotSuuntaan(lista, ruutu, asema, vari, 1, vari == 0 ? 1 : -1, 1);
-		}
+		siirrotSuuntaan(lista, ruutu, asema, vari, 1, (1 * varinSuunta), 1);
+	}
+	if (asema->kaksoisaskelSarakkeella == sarake - 1 && asema->_lauta[sarake - 1][rivi] != NULL &&
+		sarake - 1 >= 0 && asema->_lauta[sarake - 1][rivi]->getKoodi() == (vari == 0 ? MS : VS))
+	{
+		siirrotSuuntaan(lista, ruutu, asema, vari, -1, (1 * varinSuunta), 1);
 	}
 }
 
