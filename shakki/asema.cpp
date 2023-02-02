@@ -119,11 +119,11 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 		// Tarkistetaan oliko sotilaan kaksoisaskel
 		// (asetetaan kaksoisaskel-lippu)
-		if (_lauta[aS][aR] == vs && lR == 3 && aR == 1)
+		if (_lauta[aS][aR] == vs && aR == 1 && lR == 3)
 		{
 			kaksoisaskelSarakkeella = lS;
 		}
-		else if (_lauta[aS][aR] == ms && lR == 4 && aR == 6)
+		else if (_lauta[aS][aR] == ms && aR == 6 && lR == 4)
 		{
 			kaksoisaskelSarakkeella = lS;
 		}
