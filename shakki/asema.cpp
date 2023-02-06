@@ -343,7 +343,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 	return paluu;
 }
 
-bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
+bool Asema::onkoRuutuUhattu(Ruutu *ruutu, int vastustajanVari)
 {
 	list<Siirto> vastustajanSiirrot;
 	annaVastustajanSiirrot(vastustajanSiirrot);
@@ -408,11 +408,12 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto> &lista)
 			}
 		}
 	}
-	
+
 	huolehdiKuninkaanShakeista(lista, _siirtovuoro);
+	annaLinnoitusSiirrot(lista, _siirtovuoro);
 }
 
-void Asema::annaVastustajanSiirrot(std::list<Siirto>& lista)
+void Asema::annaVastustajanSiirrot(std::list<Siirto> &lista)
 {
 	for (int i = 0; i < 8; i++)
 	{
@@ -423,5 +424,18 @@ void Asema::annaVastustajanSiirrot(std::list<Siirto>& lista)
 				_lauta[j][i]->annaSiirrot(lista, new Ruutu(j, i), this, _lauta[j][i]->getVari());
 			}
 		}
+	}
+}
+
+void Asema::annaLinnoitusSiirrot(std::list<Siirto> &lista, int vari)
+{
+	int rivi = (vari == 0 ? 0 : 7);
+	if (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaKTliikkunut() && onkoRuutuUhattu(&Ruutu(4, rivi), (vari == 0 ? 1 : 0)) && onkoRuutuUhattu(&Ruutu(5, rivi), (vari == 0 ? 1 : 0)) && onkoRuutuUhattu(&Ruutu(6, rivi), (vari == 0 ? 1 : 0)) && _lauta[5][rivi] == NULL && _lauta[6][rivi] == NULL)
+	{
+		lista.push_back(Siirto(true, false));
+	}
+	if (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaDTliikkunut() && onkoRuutuUhattu(&Ruutu(4, rivi), (vari == 0 ? 1 : 0)) && onkoRuutuUhattu(&Ruutu(3, rivi), (vari == 0 ? 1 : 0)) && onkoRuutuUhattu(&Ruutu(3, rivi), (vari == 0 ? 1 : 0)) && _lauta[3][rivi] == NULL && _lauta[2][rivi] == NULL)
+	{
+		lista.push_back(Siirto(false, true));
 	}
 }
