@@ -6,6 +6,14 @@ Ruutu::Ruutu(int sarake, int rivi)
 	setRivi(rivi);
 }
 
+bool Ruutu::operator==(const Ruutu& ruutu) const
+{
+	if (_rivi == ruutu._rivi && _sarake == ruutu._sarake)
+		return true;
+	else
+		return false;
+}
+
 int Ruutu::getRivi()
 {
 	return _rivi;

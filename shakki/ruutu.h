@@ -6,6 +6,9 @@ class Ruutu{
 public:
 	Ruutu(int, int);
 	Ruutu() {}
+
+	bool operator==(const Ruutu&) const;
+	
 	int getRivi();
 	int getSarake();
 	void setRivi(int);

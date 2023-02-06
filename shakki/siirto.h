@@ -13,6 +13,9 @@ public:
 	Siirto(Ruutu, Ruutu);
 	Siirto() {}
 	Siirto(bool, bool); // Linnoitus lyhesti (K-siipi) tai pitk�sti (D-siipi?
+	
+	bool operator==(const Siirto&) const;
+	
 	Ruutu getAlkuruutu();
 	Ruutu getLoppuruutu();
 	bool onkoLyhytLinna();

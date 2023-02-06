@@ -19,6 +19,23 @@ Siirto::Siirto(bool lyhytLinna, bool pitkaLinna)
 	_loppuRuutu = Ruutu(0, 0);
 }
 
+bool Siirto::operator==(const Siirto& siirto) const
+{
+	if (siirto._lyhytLinna == false && siirto._pitkaLinna == false) {
+		if (_alkuRuutu == siirto._alkuRuutu && _loppuRuutu == siirto._loppuRuutu)
+			return true;
+		else
+			return false;
+	}
+	else if (siirto._lyhytLinna == _lyhytLinna && siirto._pitkaLinna == _pitkaLinna) {
+		return true;
+	}
+	else {
+		//error with comparison
+		return false;
+	}
+}
+
 Ruutu Siirto::getAlkuruutu()
 {
 	return _alkuRuutu;
