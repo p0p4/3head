@@ -59,9 +59,7 @@ void Kayttoliittyma::piirraLauta(std::list<Siirto> &lista)
         wcout << L".\n";
     }
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
-    wcout << L"   a  b  c  d  e  f  g  h ";
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0);
-    wcout << L".\n";
+    wcout << L"   a  b  c  d  e  f  g  h \n";
 }
 
 /*
@@ -77,8 +75,6 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
 
     int asciiConversionChar = 97;
     int asciiConversionNum = 49;
-
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 7);
 
     wcout << "Anna siirto." << endl;
     string siirtoStr;

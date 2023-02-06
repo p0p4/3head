@@ -94,10 +94,16 @@ void Sotilas::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, 
 	int rivi = ruutu->getRivi();
 	int varinSuunta = (vari == 0 ? 1 : -1);
 
-	// eteenpäin yksi
-	if (asema->_lauta[sarake][rivi + (1 * varinSuunta)] == NULL)
+	// korotus
+	if (rivi == (vari == 0 ? 6 : 1))
 	{
-		siirrotSuuntaan(lista, ruutu, asema, vari, 0, (1 * varinSuunta), 1);
+		lisaaSotilaanKorotukset(lista, siirto(ruutu, asema->_lauta[sarake][rivi + varinSuunta]), asema);
+	}
+
+	// eteenpäin yksi
+	else if (asema->_lauta[sarake][rivi + varinSuunta] == NULL)
+	{
+		siirrotSuuntaan(lista, ruutu, asema, vari, 0, varinSuunta, 1);
 		// eteenpäin kaksi
 		if (rivi == (vari == 0 ? 1 : 6) && asema->_lauta[sarake][rivi + (2 * varinSuunta)] == NULL)
 		{
@@ -106,28 +112,49 @@ void Sotilas::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, 
 	}
 
 	// viistoon
-	if (asema->_lauta[sarake + 1][rivi + (1 * varinSuunta)] != NULL)
+	if (asema->_lauta[sarake + 1][rivi + varinSuunta] != NULL)
 	{
-		siirrotSuuntaan(lista, ruutu, asema, vari, 1, (1 * varinSuunta), 1);
+		siirrotSuuntaan(lista, ruutu, asema, vari, 1, varinSuunta, 1);
 	}
-	if (asema->_lauta[sarake - 1][rivi + (1 * varinSuunta)] != NULL)
+	if (asema->_lauta[sarake - 1][rivi + varinSuunta] != NULL)
 	{
-		siirrotSuuntaan(lista, ruutu, asema, vari, -1, (1 * varinSuunta), 1);
+		siirrotSuuntaan(lista, ruutu, asema, vari, -1, varinSuunta, 1);
 	}
 
 	// en passant
+	if (asema->kaksoisaskelSarakkeella == -1)
+		return;
 	if (asema->kaksoisaskelSarakkeella == sarake + 1 && asema->_lauta[sarake + 1][rivi] != NULL &&
 		sarake + 1 < 8 && asema->_lauta[sarake + 1][rivi]->getKoodi() == (vari == 0 ? MS : VS))
 	{
-		siirrotSuuntaan(lista, ruutu, asema, vari, 1, (1 * varinSuunta), 1);
+		siirrotSuuntaan(lista, ruutu, asema, vari, 1, varinSuunta, 1);
 	}
 	if (asema->kaksoisaskelSarakkeella == sarake - 1 && asema->_lauta[sarake - 1][rivi] != NULL &&
 		sarake - 1 >= 0 && asema->_lauta[sarake - 1][rivi]->getKoodi() == (vari == 0 ? MS : VS))
 	{
-		siirrotSuuntaan(lista, ruutu, asema, vari, -1, (1 * varinSuunta), 1);
+		siirrotSuuntaan(lista, ruutu, asema, vari, -1, varinSuunta, 1);
 	}
 }
 
 void Sotilas::lisaaSotilaanKorotukset(Siirto *siirto, std::list<Siirto> &lista, Asema *asema)
 {
+	int vari = asema->getSiirtovuoro();
+
+	if (siirto->getLoppuruutu().getRivi() == (vari == 0 ? 7 : 0))
+	{
+		siirto->miksikorotetaan = (vari == 0 ? VD : MD);
+		lista.push_back(*siirto);
+
+		Siirto torniksi = *siirto;
+		torniksi.miksikorotetaan = (vari == 0 ? VT : MT);
+		lista.push_back(torniksi);
+
+		Siirto lahetiksi = *siirto;
+		lahetiksi.miksikorotetaan = (vari == 0 ? VL : ML);
+		lista.push_back(lahetiksi);
+
+		Siirto ratsuksi = *siirto;
+		ratsuksi.miksikorotetaan = (vari == 0 ? VR : MR);
+		lista.push_back(ratsuksi);
+	}
 }
