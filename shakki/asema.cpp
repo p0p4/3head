@@ -376,7 +376,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto> &lista, int vari)
 				{
 					kuninkaanRuutu.setSarake(j);
 					kuninkaanRuutu.setRivi(i);
-					if (temp.onkoRuutuUhattu(&kuninkaanRuutu, temp._siirtovuoro))
+					if (!temp.onkoRuutuUhattu(&kuninkaanRuutu, temp._siirtovuoro))
 					{
 						tempLista.push_back(s);
 					}
@@ -385,7 +385,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto> &lista, int vari)
 				{
 					kuninkaanRuutu.setSarake(j);
 					kuninkaanRuutu.setRivi(i);
-					if (temp.onkoRuutuUhattu(&kuninkaanRuutu, temp._siirtovuoro))
+					if (!temp.onkoRuutuUhattu(&kuninkaanRuutu, temp._siirtovuoro))
 					{
 						tempLista.push_back(s);
 					}
