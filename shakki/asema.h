@@ -46,6 +46,7 @@ public:
 	bool getOnkoValkeaKTliikkunut();						// Linnoittuminen mahdollista?
 	bool getOnkoMustaDTliikkunut();							// Linnoittuminen mahdollista?
 	bool getOnkoMustaKTliikkunut();							// Linnoittuminen mahdollista?
+	void annaLaillisetSiirrot2(std::list<Siirto>& lista);
 	
 private:
 

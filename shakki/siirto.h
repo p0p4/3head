@@ -18,6 +18,7 @@ public:
 	bool onkoLyhytLinna();
 	bool onkoPitkalinna();
 	Nappula *_miksikorotetaan = 0;
+	bool operator==(const Siirto& siirto);
 
 private:
 	Ruutu _alkuRuutu;

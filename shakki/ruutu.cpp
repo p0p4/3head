@@ -25,3 +25,11 @@ void Ruutu::setSarake(int sarake)
 {
 	_sarake = sarake;
 }
+
+bool Ruutu::operator==(const Ruutu& ruutu)
+{
+	if (_rivi == ruutu._rivi && _sarake == ruutu._sarake)
+		return true;
+	else
+		return false;
+}
