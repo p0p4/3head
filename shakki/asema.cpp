@@ -346,7 +346,7 @@ MinMaxPaluu Asema::mini(int syvyys)
 bool Asema::onkoRuutuUhattu(Ruutu* ruutu, int vastustajanVari)
 {
 	list<Siirto> vastustajanSiirrot;
-	annaLaillisetSiirrot2(vastustajanSiirrot);
+	annaVastustajanSiirrot(vastustajanSiirrot);
 
 	for (Siirto s : vastustajanSiirrot)
 	{
@@ -378,8 +378,7 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto> &lista, int vari)
 					kuninkaanRuutu.setRivi(i);
 					if (temp.onkoRuutuUhattu(&kuninkaanRuutu, temp._siirtovuoro))
 					{
-						lista.remove(s);
-						//tempLista.push_back(s);
+						tempLista.push_back(s);
 					}
 				}
 				else if (temp._lauta[j][i] == mk && vari == 1)
@@ -388,14 +387,13 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto> &lista, int vari)
 					kuninkaanRuutu.setRivi(i);
 					if (temp.onkoRuutuUhattu(&kuninkaanRuutu, temp._siirtovuoro))
 					{
-						//tempLista.push_back(s);
-						lista.remove(s);
+						tempLista.push_back(s);
 					}
 				}
 			}
 		}
 	}
-	//lista = tempLista;
+	lista = tempLista;
 }
 
 void Asema::annaLaillisetSiirrot(std::list<Siirto> &lista)
@@ -414,7 +412,7 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto> &lista)
 	huolehdiKuninkaanShakeista(lista, _siirtovuoro);
 }
 
-void Asema::annaLaillisetSiirrot2(std::list<Siirto>& lista)
+void Asema::annaVastustajanSiirrot(std::list<Siirto>& lista)
 {
 	for (int i = 0; i < 8; i++)
 	{
