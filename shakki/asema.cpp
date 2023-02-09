@@ -430,12 +430,26 @@ void Asema::annaVastustajanSiirrot(std::list<Siirto> &lista)
 void Asema::annaLinnoitusSiirrot(std::list<Siirto> &lista, int vari)
 {
 	int rivi = (vari == 0 ? 0 : 7);
-	if (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaKTliikkunut() && onkoRuutuUhattu(&Ruutu(4, rivi), (vari == 0 ? 1 : 0)) && onkoRuutuUhattu(&Ruutu(5, rivi), (vari == 0 ? 1 : 0)) && onkoRuutuUhattu(&Ruutu(6, rivi), (vari == 0 ? 1 : 0)) && _lauta[5][rivi] == NULL && _lauta[6][rivi] == NULL)
-	{
-		lista.push_back(Siirto(true, false));
-	}
-	if (!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaDTliikkunut() && onkoRuutuUhattu(&Ruutu(4, rivi), (vari == 0 ? 1 : 0)) && onkoRuutuUhattu(&Ruutu(3, rivi), (vari == 0 ? 1 : 0)) && onkoRuutuUhattu(&Ruutu(3, rivi), (vari == 0 ? 1 : 0)) && _lauta[3][rivi] == NULL && _lauta[2][rivi] == NULL)
+	int vastustajanVari = (vari == 0 ? 1 : 0);
+
+	if ((!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaDTliikkunut() || !getOnkoMustaKuningasLiikkunut() && !getOnkoMustaDTliikkunut()) 
+	&& _lauta[1][rivi] == NULL 
+	&& _lauta[2][rivi] == NULL 
+	&& _lauta[3][rivi] == NULL 
+	&& !onkoRuutuUhattu(&Ruutu(1, rivi), vastustajanVari) 
+	&& !onkoRuutuUhattu(&Ruutu(2, rivi), vastustajanVari) 
+	&& !onkoRuutuUhattu(&Ruutu(3, rivi), vastustajanVari) 
+	&& !onkoRuutuUhattu(&Ruutu(4, rivi), vastustajanVari))
 	{
 		lista.push_back(Siirto(false, true));
+	}
+	if ((!getOnkoValkeaKuningasLiikkunut() && !getOnkoValkeaKTliikkunut() || !getOnkoMustaKuningasLiikkunut() && !getOnkoMustaKTliikkunut()) 
+	&& _lauta[6][rivi] == NULL 
+	&& _lauta[5][rivi] == NULL 
+	&& !onkoRuutuUhattu(&Ruutu(6, rivi), vastustajanVari) 
+	&& !onkoRuutuUhattu(&Ruutu(5, rivi), vastustajanVari) 
+	&& !onkoRuutuUhattu(&Ruutu(4, rivi), vastustajanVari))
+	{
+		lista.push_back(Siirto(true, false));
 	}
 }
