@@ -12,5 +12,6 @@ Debug/
 Release/
 shakki/Debug/
 shakki/Release/
-shakki/shakki.vcxproj.user
+shakki/shakki.vcxproj*
+shakki.*
 UpgradeLog.htm
