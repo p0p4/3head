@@ -13,7 +13,6 @@ public:
 	int getSarake();
 	void setRivi(int);
 	void setSarake(int);
-	bool operator==(const Ruutu& ruutu);
 
 private:
 	int _sarake;

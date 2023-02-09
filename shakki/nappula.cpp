@@ -138,8 +138,6 @@ void Sotilas::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, 
 
 void Sotilas::lisaaSotilaanKorotukset(Siirto *siirto, std::list<Siirto> &lista, Asema *asema)
 {
-	int vari = asema->getSiirtovuoro();
-
 	if (siirto->getLoppuruutu().getRivi() == 7)
 	{
 		siirto->_miksikorotetaan = asema->vd;
