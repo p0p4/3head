@@ -109,11 +109,11 @@ void Asema::paivitaAsema(Siirto* siirto)
 		{
 			if (_lauta[aS][aR] == vs && lS == kaksoisaskelSarakkeella)
 			{
-				_lauta[lS][lR + 1] = NULL;
+				_lauta[lS][lR - 1] = NULL;
 			}
 			else if (_lauta[aS][aR] == ms && lS == kaksoisaskelSarakkeella)
 			{
-				_lauta[lS][lR - 1] = NULL;
+				_lauta[lS][lR + 1] = NULL;
 			}
 		}
 
@@ -257,8 +257,8 @@ double Asema::evaluoi()
 	wcout << "Kuningas turvassa: " << valkeaArvo - mustaArvo << endl;
 
 	// 3. Arvosta keskustaa
-	valkeaArvo = nappuloitaKeskella(0) * keskustaKerroin;
-	mustaArvo = nappuloitaKeskella(1) * keskustaKerroin;
+	valkeaArvo += nappuloitaKeskella(0) * keskustaKerroin;
+	mustaArvo += nappuloitaKeskella(1) * keskustaKerroin;
 	wcout << "Keskustan arvo: " << valkeaArvo - mustaArvo << endl;
 
 	// 4. Arvosta linjoja
@@ -390,19 +390,19 @@ double Asema::nappuloitaKeskella(int vari)
 	// ratsut laitakeskustassa + 0.11/napa
 
 	if (_lauta[3][3] != NULL && _lauta[3][3]->getVari() == vari
-		&& _lauta[3][3] == vs || _lauta[3][3] == ms || _lauta[3][3] == vr || _lauta[3][3] == mr)
+		&& (_lauta[3][3] == vs || _lauta[3][3] == ms || _lauta[3][3] == vr || _lauta[3][3] == mr))
 		arvo += 0.25;
 
 	if (_lauta[4][3] != NULL && _lauta[4][3]->getVari() == vari
-		&& _lauta[4][3] == vs || _lauta[4][3] == ms || _lauta[4][3] == vr || _lauta[4][3] == mr)
+		&& (_lauta[4][3] == vs || _lauta[4][3] == ms || _lauta[4][3] == vr || _lauta[4][3] == mr))
 		arvo += 0.25;
 
 	if (_lauta[3][4] != NULL && _lauta[3][4]->getVari() == vari
-		&& _lauta[3][4] == vs || _lauta[3][4] == ms || _lauta[3][4] == vr || _lauta[3][4] == mr)
+		&& (_lauta[3][4] == vs || _lauta[3][4] == ms || _lauta[3][4] == vr || _lauta[3][4] == mr))
 		arvo += 0.25;
 
 	if (_lauta[4][4] != NULL && _lauta[4][4]->getVari() == vari
-		&& _lauta[4][4] == vs || _lauta[4][4] == ms || _lauta[4][4] == vr || _lauta[4][4] == mr)
+		&& (_lauta[4][4] == vs || _lauta[4][4] == ms || _lauta[4][4] == vr || _lauta[4][4] == mr))
 		arvo += 0.25;
 
 	for (int i = 2; i < 6; i++)

@@ -61,9 +61,13 @@ int main()
 		// }
 		// else
 		// {
+
+		wcout << (asema.getSiirtovuoro() == 0 ? "valkoinen" : "musta") << endl;
 		siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
 		// }
 		asema.paivitaAsema(&siirto);
+
+		wcout << "eval: " << asema.evaluoi() << endl;
 	}
 
 	return 0;
