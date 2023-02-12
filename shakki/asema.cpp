@@ -478,15 +478,118 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	return paluuarvo;
 }
 
-MinMaxPaluu Asema::maxi(int syvyys)
+MinMaxPaluu Asema::maxi(int syvyys, Asema a)
 {
 	MinMaxPaluu paluu;
+	MinMaxPaluu temp;
+	Ruutu kuninkaanRuutu;
+	Asema seuraaja = a;
+
+	double max = -100000;
+
+	std::list<Siirto> lista = a.annaLaillisetSiirrot();
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (temp._lauta[j][i] == vk)
+			{
+				kuninkaanRuutu.setSarake(j);
+				kuninkaanRuutu.setRivi(i);
+			}
+		}
+	}
+
+	// Matti ja patti tarkistus
+	if (lista.empty() && onkoRuutuUhattu(kuninkaanRuutu, 0))
+	{
+		paluu._evaluointiArvo = max;
+		return paluu;
+	}
+	else if (lista.empty())
+	{
+		paluu._evaluointiArvo = 0;
+		return paluu;
+	}
+
+
+	if (syvyys == 0)
+	{
+		paluu._evaluointiArvo = evaluoi();
+		return paluu;
+	}
+
+
+	for (Siirto s : lista)
+	{
+		seuraaja.paivitaAsema();
+		temp = mini(syvyys - 1, seuraaja);
+
+		if (temp._evaluointiArvo > max)
+		{
+			paluu._evaluointiArvo = temp._evaluointiArvo;
+			paluu._parasSiirto = s;
+		}
+	}
+
 	return paluu;
 }
 
 MinMaxPaluu Asema::mini(int syvyys)
 {
 	MinMaxPaluu paluu;
+	MinMaxPaluu temp;
+	Ruutu kuninkaanRuutu;
+	Asema seuraaja = a;
+
+	double min = 100000;
+
+	std::list<Siirto> lista = a.annaLaillisetSiirrot();
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			if (temp._lauta[j][i] == mk)
+			{
+				kuninkaanRuutu.setSarake(j);
+				kuninkaanRuutu.setRivi(i);
+			}
+		}
+	}
+
+	// Matti ja patti tarkistus
+	if (lista.empty() && onkoRuutuUhattu(kuninkaanRuutu, 1))
+	{
+		paluu._evaluointiArvo = min;
+		return paluu;
+	}
+	else if (lista.empty())
+	{
+		paluu._evaluointiArvo = 0;
+		return paluu;
+	}
+
+	if (syvyys == 0)
+	{
+		paluu._evaluointiArvo = evaluoi();
+		return paluu;
+	}
+
+
+	for (Siirto s : lista)
+	{
+		seuraaja.paivitaAsema();
+		temp = mini(syvyys - 1, seuraaja);
+
+		if (temp._evaluointiArvo < min)
+		{
+			paluu._evaluointiArvo = temp._evaluointiArvo;
+			paluu._parasSiirto = s;
+		}
+	}
+
 	return paluu;
 }
 
