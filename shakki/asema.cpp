@@ -249,21 +249,21 @@ double Asema::evaluoi()
 	// 1. Nappuloiden arvo
 	valkeaArvo += laskeNappuloidenArvo(0);
 	mustaArvo += laskeNappuloidenArvo(1);
-	wcout << "Nappuloiden arvo: " << valkeaArvo - mustaArvo << endl;
+	//wcout << "Nappuloiden arvo: " << valkeaArvo - mustaArvo << endl;
 
 	// 2. Kuningas turvassa
 	valkeaArvo += kuningasTurvassa(0) * kuningasKerroin;
 	mustaArvo += kuningasTurvassa(1) * kuningasKerroin;
-	wcout << "Kuningas turvassa: " << valkeaArvo - mustaArvo << endl;
+	//wcout << "Kuningas turvassa: " << valkeaArvo - mustaArvo << endl;
 
 	// 3. Arvosta keskustaa
 	valkeaArvo += nappuloitaKeskella(0) * keskustaKerroin;
 	mustaArvo += nappuloitaKeskella(1) * keskustaKerroin;
-	wcout << "Keskustan arvo: " << valkeaArvo - mustaArvo << endl;
+	//wcout << "Keskustan arvo: " << valkeaArvo - mustaArvo << endl;
 
 	// 4. Arvosta linjoja
-	//valkeaArvo = linjat(0) * linjaKerroin;
-	//mustaArvo = linjat(1) * linjaKerroin;
+	valkeaArvo += linjat(0) * linjaKerroin;
+	mustaArvo += linjat(1) * linjaKerroin;
 	//wcout << "Linjojen arvo: " << valkeaArvo - mustaArvo << endl;
 
 	return valkeaArvo - mustaArvo;
@@ -431,11 +431,28 @@ double Asema::nappuloitaKeskella(int vari)
 
 double Asema::linjat(int vari)
 {
+	//4. Arvosta pitkiä linjoja daami, torni ja lähetti
 	double arvo = 0;
+	std::list<Siirto> lista;
 
-	// valkoiset
+	for (int x = 0; x < 8; x++) 
+	{
+		for (int y = 0; y < 8; y++) 
+		{
+			if (_lauta[x][y] == NULL || _lauta[x][y]->getVari() != vari)
+				continue;
 
-	// mustat
+			if (_lauta[x][y]->getKoodi() == VL || _lauta[x][y]->getKoodi() == ML)
+				_lauta[x][y]->annaSiirrot(lista, new Ruutu(x, y), this, vari);
+
+			if (_lauta[x][y]->getKoodi() == VT || _lauta[x][y]->getKoodi() == MT)
+				_lauta[x][y]->annaSiirrot(lista, new Ruutu(x, y), this, vari);
+
+			if (_lauta[x][y]->getKoodi() == VD || _lauta[x][y]->getKoodi() == MD)
+				_lauta[x][y]->annaSiirrot(lista, new Ruutu(x, y), this, vari);
+		}
+	}
+	arvo = lista.size();
 
 	return arvo;
 }
