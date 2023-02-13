@@ -24,10 +24,11 @@ int main()
 	Peli peli(Kayttoliittyma::getInstance()->kysyVastustajanVari());
 	std::list<Siirto> lista;
 	system("cls");
-	int koneenVari = peli.getKoneenVari();
+	int koneenVari = 1;
 
 	while (lopetus != 0)
 	{
+
 		lista.clear();
 		wcout << "\n";
 		// Tarkasta onko peli loppu?
@@ -46,26 +47,22 @@ int main()
 		}
 
 		Siirto siirto;
-		// if (asema.getSiirtovuoro() == koneenVari)
-		// {
-		// 	MinMaxPaluu paluu;
-		// 	if (koneenVari == 0)
-		// 	{
-		// 		paluu = asema.maxi(3);
-		// 	}
-		// 	else
-		// 	{
-		// 		paluu = asema.mini(3);
-		// 	}
-		// 	siirto = paluu._parasSiirto;
-		// }
-		// else
-		// {
+		if (asema.getSiirtovuoro() == koneenVari)
+		{
+			MinMaxPaluu paluu;
+			paluu = asema.minimax(2);
 
-		wcout << (asema.getSiirtovuoro() == 0 ? "valkoinen" : "musta") << endl;
-		siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
-		// }
+			siirto = paluu._parasSiirto;
+			wcout << "valitun siirron eval:" << paluu._evaluointiArvo << endl;
+		}
+		else
+		{
+
+			wcout << (asema.getSiirtovuoro() == 0 ? "valkoinen" : "musta") << endl;
+			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+		}
 		asema.paivitaAsema(&siirto);
+
 
 		wcout << "eval: " << asema.evaluoi() << endl;
 	}

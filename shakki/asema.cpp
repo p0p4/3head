@@ -510,19 +510,18 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema* a)
 	MinMaxPaluu paluu;
 	MinMaxPaluu temp;
 	Ruutu kuninkaanRuutu;
-	Asema seuraaja = *a;
 
 	double max = -100000;
 
 	std::list<Siirto> lista;
 
-	annaLaillisetSiirrot(lista);
+	a->annaLaillisetSiirrot(lista);
 
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			if (_lauta[j][i] == vk)
+			if (a->_lauta[j][i] == vk)
 			{
 				kuninkaanRuutu.setSarake(j);
 				kuninkaanRuutu.setRivi(i);
@@ -530,10 +529,10 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema* a)
 		}
 	}
 
-	// Matti ja patti tarkistus
-	if (lista.empty() && onkoRuutuUhattu(&kuninkaanRuutu, 0))
+	// Matti ja patti tarkistus (matti -100000 eval)
+	if (lista.empty() && a->onkoRuutuUhattu(&kuninkaanRuutu, 0))
 	{
-		paluu._evaluointiArvo = max;
+		paluu._evaluointiArvo = -100000;
 		return paluu;
 	}
 	else if (lista.empty())
@@ -545,18 +544,20 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema* a)
 
 	if (syvyys == 0)
 	{
-		paluu._evaluointiArvo = evaluoi();
+		paluu._evaluointiArvo = a->evaluoi();
 		return paluu;
 	}
 
 
 	for (Siirto s : lista)
 	{
+		Asema seuraaja = *a;
 		seuraaja.paivitaAsema(&s);
 		temp = mini(syvyys - 1, &seuraaja);
 
 		if (temp._evaluointiArvo > max)
 		{
+			max = temp._evaluointiArvo;
 			paluu._evaluointiArvo = temp._evaluointiArvo;
 			paluu._parasSiirto = s;
 		}
@@ -570,19 +571,18 @@ MinMaxPaluu Asema::mini(int syvyys, Asema* a)
 	MinMaxPaluu paluu;
 	MinMaxPaluu temp;
 	Ruutu kuninkaanRuutu;
-	Asema seuraaja = *a;
 
 	double min = 100000;
 
 	std::list<Siirto> lista;
 
-	annaLaillisetSiirrot(lista);
+	a->annaLaillisetSiirrot(lista);
 
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			if (_lauta[j][i] == mk)
+			if (a->_lauta[j][i] == mk)
 			{
 				kuninkaanRuutu.setSarake(j);
 				kuninkaanRuutu.setRivi(i);
@@ -590,10 +590,10 @@ MinMaxPaluu Asema::mini(int syvyys, Asema* a)
 		}
 	}
 
-	// Matti ja patti tarkistus
-	if (lista.empty() && onkoRuutuUhattu(&kuninkaanRuutu, 1))
+	// Matti ja patti tarkistus (matti 100000 eval)
+	if (lista.empty() && a->onkoRuutuUhattu(&kuninkaanRuutu, 1))
 	{
-		paluu._evaluointiArvo = min;
+		paluu._evaluointiArvo = 100000;
 		return paluu;
 	}
 	else if (lista.empty())
@@ -604,22 +604,26 @@ MinMaxPaluu Asema::mini(int syvyys, Asema* a)
 
 	if (syvyys == 0)
 	{
-		paluu._evaluointiArvo = evaluoi();
+		paluu._evaluointiArvo = a->evaluoi();
 		return paluu;
 	}
 
-
+	wcout << "Kaikkien siirtojen evaluoinnit: ";
 	for (Siirto s : lista)
 	{
+		Asema seuraaja = *a;
 		seuraaja.paivitaAsema(&s);
-		temp = mini(syvyys - 1, &seuraaja);
+		wcout << seuraaja.evaluoi() << " ";
+		temp = maxi(syvyys - 1, &seuraaja);
 
 		if (temp._evaluointiArvo < min)
 		{
+			min = temp._evaluointiArvo;
 			paluu._evaluointiArvo = temp._evaluointiArvo;
 			paluu._parasSiirto = s;
 		}
 	}
+	wcout << endl;
 
 	return paluu;
 }
