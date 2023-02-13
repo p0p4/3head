@@ -46,25 +46,14 @@ int main()
 			continue;
 		}
 
-		// Testi juttui
-		//MinMaxPaluu paluu;
-		//paluu = asema.minimax(1);
-		//wcout << "evaluointi " << paluu._evaluointiArvo << "\t" << paluu._parasSiirto.getAlkuruutu().getSarake() << paluu._parasSiirto.getAlkuruutu().getRivi() << paluu._parasSiirto.getLoppuruutu().getSarake() << paluu._parasSiirto.getLoppuruutu().getRivi();
-
-
 		Siirto siirto;
 		if (asema.getSiirtovuoro() == koneenVari)
 		{
 			MinMaxPaluu paluu;
-			if (koneenVari == 0)
-			{
-				paluu = asema.minimax(1);
-			}
-			else
-			{
-				paluu = asema.minimax(1);
-			}
+			paluu = asema.minimax(2);
+
 			siirto = paluu._parasSiirto;
+			wcout << "valitun siirron eval:" << paluu._evaluointiArvo << endl;
 		}
 		else
 		{
