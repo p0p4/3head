@@ -536,7 +536,7 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema a)
 	return paluu;
 }
 
-MinMaxPaluu Asema::mini(int syvyys)
+MinMaxPaluu Asema::mini(int syvyys, Asema a)
 {
 	MinMaxPaluu paluu;
 	MinMaxPaluu temp;
