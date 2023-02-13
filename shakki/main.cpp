@@ -24,10 +24,11 @@ int main()
 	Peli peli(Kayttoliittyma::getInstance()->kysyVastustajanVari());
 	std::list<Siirto> lista;
 	system("cls");
-	int koneenVari = peli.getKoneenVari();
+	int koneenVari = 1;
 
 	while (lopetus != 0)
 	{
+
 		lista.clear();
 		wcout << "\n";
 		// Tarkasta onko peli loppu?
@@ -45,27 +46,34 @@ int main()
 			continue;
 		}
 
-		Siirto siirto;
-		// if (asema.getSiirtovuoro() == koneenVari)
-		// {
-		// 	MinMaxPaluu paluu;
-		// 	if (koneenVari == 0)
-		// 	{
-		// 		paluu = asema.maxi(3);
-		// 	}
-		// 	else
-		// 	{
-		// 		paluu = asema.mini(3);
-		// 	}
-		// 	siirto = paluu._parasSiirto;
-		// }
-		// else
-		// {
+		// Testi juttui
+		//MinMaxPaluu paluu;
+		//paluu = asema.minimax(1);
+		//wcout << "evaluointi " << paluu._evaluointiArvo << "\t" << paluu._parasSiirto.getAlkuruutu().getSarake() << paluu._parasSiirto.getAlkuruutu().getRivi() << paluu._parasSiirto.getLoppuruutu().getSarake() << paluu._parasSiirto.getLoppuruutu().getRivi();
 
-		wcout << (asema.getSiirtovuoro() == 0 ? "valkoinen" : "musta") << endl;
-		siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
-		// }
+
+		Siirto siirto;
+		if (asema.getSiirtovuoro() == koneenVari)
+		{
+			MinMaxPaluu paluu;
+			if (koneenVari == 0)
+			{
+				paluu = asema.minimax(1);
+			}
+			else
+			{
+				paluu = asema.minimax(1);
+			}
+			siirto = paluu._parasSiirto;
+		}
+		else
+		{
+
+			wcout << (asema.getSiirtovuoro() == 0 ? "valkoinen" : "musta") << endl;
+			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+		}
 		asema.paivitaAsema(&siirto);
+
 
 		wcout << "eval: " << asema.evaluoi() << endl;
 	}
