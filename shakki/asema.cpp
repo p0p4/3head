@@ -488,12 +488,12 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	return paluuarvo;
 }
 
-MinMaxPaluu Asema::maxi(int syvyys)
+MinMaxPaluu Asema::maxi(int syvyys, Asema* a)
 {
 	MinMaxPaluu paluu;
 	MinMaxPaluu temp;
 	Ruutu kuninkaanRuutu;
-	Asema seuraaja = *this;
+	Asema seuraaja = *a;
 
 	double max = -100000;
 
@@ -548,12 +548,12 @@ MinMaxPaluu Asema::maxi(int syvyys)
 	return paluu;
 }
 
-MinMaxPaluu Asema::mini(int syvyys)
+MinMaxPaluu Asema::mini(int syvyys, Asema* a)
 {
 	MinMaxPaluu paluu;
 	MinMaxPaluu temp;
 	Ruutu kuninkaanRuutu;
-	Asema seuraaja = *this;
+	Asema seuraaja = *a;
 
 	double min = 100000;
 
