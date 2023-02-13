@@ -475,6 +475,16 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	// Rekursioaskel: kokeillaan jokaista laillista siirtoa s
 	// (alustetaan paluuarvo huonoimmaksi mahdolliseksi).
 
+
+	if (getSiirtovuoro() == 0)
+	{
+		paluuarvo = maxi(syvyys, this);
+	}
+	else
+	{
+		paluuarvo = mini(syvyys, this);
+	}
+
 	return paluuarvo;
 }
 
@@ -502,7 +512,7 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema a)
 	}
 
 	// Matti ja patti tarkistus
-	if (lista.empty() && onkoRuutuUhattu(kuninkaanRuutu, 0))
+	if (lista.empty() && this.onkoRuutuUhattu(kuninkaanRuutu, 0))
 	{
 		paluu._evaluointiArvo = max;
 		return paluu;
@@ -516,7 +526,7 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema a)
 
 	if (syvyys == 0)
 	{
-		paluu._evaluointiArvo = evaluoi();
+		paluu._evaluointiArvo = this.evaluoi();
 		return paluu;
 	}
 
@@ -560,7 +570,7 @@ MinMaxPaluu Asema::mini(int syvyys, Asema a)
 	}
 
 	// Matti ja patti tarkistus
-	if (lista.empty() && onkoRuutuUhattu(kuninkaanRuutu, 1))
+	if (lista.empty() && this.onkoRuutuUhattu(kuninkaanRuutu, 1))
 	{
 		paluu._evaluointiArvo = min;
 		return paluu;
@@ -573,7 +583,7 @@ MinMaxPaluu Asema::mini(int syvyys, Asema a)
 
 	if (syvyys == 0)
 	{
-		paluu._evaluointiArvo = evaluoi();
+		paluu._evaluointiArvo = this.evaluoi();
 		return paluu;
 	}
 
