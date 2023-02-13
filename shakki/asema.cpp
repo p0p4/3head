@@ -488,22 +488,24 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	return paluuarvo;
 }
 
-MinMaxPaluu Asema::maxi(int syvyys, Asema a)
+MinMaxPaluu Asema::maxi(int syvyys, Asema* a)
 {
 	MinMaxPaluu paluu;
 	MinMaxPaluu temp;
 	Ruutu kuninkaanRuutu;
-	Asema seuraaja = a;
+	Asema seuraaja = *a;
 
 	double max = -100000;
 
-	std::list<Siirto> lista = a.annaLaillisetSiirrot();
+	std::list<Siirto> lista;
+
+	annaLaillisetSiirrot(lista);
 
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			if (temp._lauta[j][i] == vk)
+			if (_lauta[j][i] == vk)
 			{
 				kuninkaanRuutu.setSarake(j);
 				kuninkaanRuutu.setRivi(i);
@@ -512,7 +514,7 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema a)
 	}
 
 	// Matti ja patti tarkistus
-	if (lista.empty() && this.onkoRuutuUhattu(kuninkaanRuutu, 0))
+	if (lista.empty() && onkoRuutuUhattu(&kuninkaanRuutu, 0))
 	{
 		paluu._evaluointiArvo = max;
 		return paluu;
@@ -526,15 +528,15 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema a)
 
 	if (syvyys == 0)
 	{
-		paluu._evaluointiArvo = this.evaluoi();
+		paluu._evaluointiArvo = evaluoi();
 		return paluu;
 	}
 
 
 	for (Siirto s : lista)
 	{
-		seuraaja.paivitaAsema();
-		temp = mini(syvyys - 1, seuraaja);
+		seuraaja.paivitaAsema(&s);
+		temp = mini(syvyys - 1, &seuraaja);
 
 		if (temp._evaluointiArvo > max)
 		{
@@ -546,22 +548,24 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema a)
 	return paluu;
 }
 
-MinMaxPaluu Asema::mini(int syvyys, Asema a)
+MinMaxPaluu Asema::mini(int syvyys, Asema* a)
 {
 	MinMaxPaluu paluu;
 	MinMaxPaluu temp;
 	Ruutu kuninkaanRuutu;
-	Asema seuraaja = a;
+	Asema seuraaja = *a;
 
 	double min = 100000;
 
-	std::list<Siirto> lista = a.annaLaillisetSiirrot();
+	std::list<Siirto> lista;
+
+	annaLaillisetSiirrot(lista);
 
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			if (temp._lauta[j][i] == mk)
+			if (_lauta[j][i] == mk)
 			{
 				kuninkaanRuutu.setSarake(j);
 				kuninkaanRuutu.setRivi(i);
@@ -570,7 +574,7 @@ MinMaxPaluu Asema::mini(int syvyys, Asema a)
 	}
 
 	// Matti ja patti tarkistus
-	if (lista.empty() && this.onkoRuutuUhattu(kuninkaanRuutu, 1))
+	if (lista.empty() && onkoRuutuUhattu(&kuninkaanRuutu, 1))
 	{
 		paluu._evaluointiArvo = min;
 		return paluu;
@@ -583,15 +587,15 @@ MinMaxPaluu Asema::mini(int syvyys, Asema a)
 
 	if (syvyys == 0)
 	{
-		paluu._evaluointiArvo = this.evaluoi();
+		paluu._evaluointiArvo = evaluoi();
 		return paluu;
 	}
 
 
 	for (Siirto s : lista)
 	{
-		seuraaja.paivitaAsema();
-		temp = mini(syvyys - 1, seuraaja);
+		seuraaja.paivitaAsema(&s);
+		temp = mini(syvyys - 1, &seuraaja);
 
 		if (temp._evaluointiArvo < min)
 		{
