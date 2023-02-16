@@ -11,16 +11,18 @@ class Siirto
 {
 public:
 	Siirto(Ruutu, Ruutu);
-	Siirto() {}
+	Siirto();
 	Siirto(bool, bool); // Linnoitus lyhesti (K-siipi) tai pitk�sti (D-siipi?
-	
-	bool operator==(const Siirto&) const;
-	
+
+	bool operator==(const Siirto &) const;
+
 	Ruutu getAlkuruutu();
 	Ruutu getLoppuruutu();
 	bool onkoLyhytLinna();
 	bool onkoPitkalinna();
 	Nappula *_miksikorotetaan = 0;
+	void setAlkuruutu(Ruutu);
+	void setLoppuruutu(Ruutu);
 
 private:
 	Ruutu _alkuRuutu;

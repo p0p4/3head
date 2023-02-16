@@ -28,17 +28,13 @@ int main()
 
 	while (lopetus != 0)
 	{
-
 		lista.clear();
 		wcout << "\n";
 		// Tarkasta onko peli loppu?
 		asema.annaLaillisetSiirrot(lista);
 		// DEBUG: Lailliset siirrot
 		Kayttoliittyma::getInstance()->piirraLauta(lista);
-		for (Siirto siirto : lista)
-		{
-			std::wcout << siirto.getLoppuruutu().getSarake() << " " << siirto.getLoppuruutu().getRivi() << endl;
-		}
+
 		if (lista.size() == 0)
 		{
 			lopetus = 0;
@@ -50,19 +46,17 @@ int main()
 		if (asema.getSiirtovuoro() == koneenVari)
 		{
 			MinMaxPaluu paluu;
-			paluu = asema.minimax(2);
+			paluu = asema.minimax(3);
 
 			siirto = paluu._parasSiirto;
 			wcout << "valitun siirron eval:" << paluu._evaluointiArvo << endl;
 		}
 		else
 		{
-
 			wcout << (asema.getSiirtovuoro() == 0 ? "valkoinen" : "musta") << endl;
 			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
 		}
 		asema.paivitaAsema(&siirto);
-
 
 		wcout << "eval: " << asema.evaluoi() << endl;
 	}
