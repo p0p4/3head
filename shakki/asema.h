@@ -5,7 +5,6 @@
 #include "minmaxpaluu.h"
 #include "siirto.h"
 
-
 // Ns. "forward declaration". Nyt Asema-luokassa voidaa esitell� Nappula-osoittimia ilman,
 // ett� nappula.h -tiedostoa t�ytyy includoida.
 class Nappula;
@@ -34,8 +33,8 @@ public:
 	Asema();												// Asettaa alkuaseman.
 	void paivitaAsema(Siirto*);								// P�ivitt�� aseman annetulla siirrolla.
 	double evaluoi();										// Aseman numeerinen arviointi.
-	MinMaxPaluu maxi(int syvyys, Asema* a);							// Minimax (max:n siirtovuoro).
-	MinMaxPaluu mini(int syvyys, Asema* a);							// Minimax (min:n siirtovuoro).
+	MinMaxPaluu maxi(int syvyys, Asema* a, double alpha, double beta);							// Minimax (max:n siirtovuoro).
+	MinMaxPaluu mini(int syvyys, Asema* a, double alpha, double beta);							// Minimax (min:n siirtovuoro).
 	MinMaxPaluu minimax(int syvyys);						// Minimax-algoritmi.
 	void annaLaillisetSiirrot(std::list<Siirto>& lista);	// Siirtogeneraattori.
 	int getSiirtovuoro();									// Palauttaa siirtovuoron.
