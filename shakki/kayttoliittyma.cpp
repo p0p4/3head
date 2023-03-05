@@ -135,14 +135,16 @@ Siirto Kayttoliittyma::annaVastustajanSiirto(std::list<Siirto>& lista)
         siirto = siirtoTemp;
     }
 
-    for(Siirto &s : lista)
-    {
-        if (s == siirto)
-        {
-            return siirto;
-        }
-    }
-    siirto = annaVastustajanSiirto(lista);
+
+    // tarkistaa, että siirto on laillinen
+    //for(Siirto &s : lista)
+    //{
+    //    if (s == siirto)
+    //    {
+    //        return siirto;
+    //    }
+    //}
+    //siirto = annaVastustajanSiirto(lista);
 
     return siirto;
 }

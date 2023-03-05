@@ -74,6 +74,7 @@ Asema::Asema()
 	_onkoValkeaKTliikkunut = false;
 	_onkoMustaDTliikkunut = false;
 	_onkoMustaKTliikkunut = false;
+	ihmisenVuoro = false;
 }
 
 void Asema::paivitaAsema(Siirto *siirto)
@@ -185,11 +186,73 @@ void Asema::paivitaAsema(Siirto *siirto)
 		{
 			_lauta[lS][lR] = _lauta[aS][aR];
 		}
+		else if (_lauta[aS][aR] == vs && lR == 7 || _lauta[aS][aR] == ms && lR == 0)
+		{
+			// Sotilaan korotukset
+			if (ihmisenVuoro)
+			{
+				string korotus;
+
+				wcout << "Miksi korotetaan? (D, T, L, R)" << endl;
+				cin >> korotus;
+
+				if (korotus == "D")
+				{
+					if (_siirtovuoro == 0)
+					{
+						siirto->_miksikorotetaan = vd;
+					}
+					else
+					{
+						siirto->_miksikorotetaan = md;
+					}
+				}
+				else if (korotus == "T")
+				{
+					if (_siirtovuoro == 0)
+					{
+						siirto->_miksikorotetaan = vt;
+					}
+					else
+					{
+						siirto->_miksikorotetaan = mt;
+					}
+				}
+				else if (korotus == "L")
+				{
+					if (_siirtovuoro == 0)
+					{
+						siirto->_miksikorotetaan = vl;
+					}
+					else
+					{
+						siirto->_miksikorotetaan = ml;
+					}
+				}
+				else if (korotus == "R")
+				{
+					if (_siirtovuoro == 0)
+					{
+						siirto->_miksikorotetaan = vr;
+					}
+					else
+					{
+						siirto->_miksikorotetaan = mr;
+					}
+				}
+			}
+
+			_lauta[lS][lR] = siirto->_miksikorotetaan;
+		}
+
+
+
 		_lauta[aS][aR] = NULL;
 	}
 
 	// p�ivitet��n _siirtovuoro
 	setSiirtovuoro(1 - getSiirtovuoro());
+	ihmisenVuoro = false;
 }
 
 int Asema::getSiirtovuoro()

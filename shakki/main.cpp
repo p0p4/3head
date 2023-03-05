@@ -53,6 +53,8 @@ int main()
 		}
 		else
 		{
+			asema.ihmisenVuoro = true;
+
 			wcout << (asema.getSiirtovuoro() == 0 ? "valkoinen" : "musta") << endl;
 			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto(lista);
 		}

@@ -35,12 +35,26 @@ void Nappula::siirrotSuuntaan(std::list<Siirto> &lista, Ruutu *ruutu, Asema *ase
 
 		if (asema->_lauta[sarake][rivi] == NULL)
 		{
+			// Sotilaan korotus
+			if ((asema->_lauta[ruutu->getSarake()][ruutu->getRivi()] == asema->vs && rivi == 7) || (asema->_lauta[ruutu->getSarake()][ruutu->getRivi()] == asema->ms && rivi == 0))
+			{
+				lisaaSotilaanKorotukset(&siirto, lista, asema);
+				continue;
+			}
+
 			lista.push_back(siirto);
 		}
 		else
 		{
+			// Sotilaan korotus
 			if (asema->_lauta[sarake][rivi]->getVari() != vari)
 			{
+				if ((asema->_lauta[ruutu->getSarake()][ruutu->getRivi()] == asema->vs && rivi == 7) || (asema->_lauta[ruutu->getSarake()][ruutu->getRivi()] == asema->ms && rivi == 0))
+				{
+					lisaaSotilaanKorotukset(&siirto, lista, asema);
+					continue;
+				}
+
 				lista.push_back(siirto);
 			}
 			break;
@@ -95,12 +109,12 @@ void Kuningas::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema,
 	siirrotSuuntaan(lista, ruutu, asema, vari, -1, -1, 1);
 }
 
-void Sotilas::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, int vari)
+void Sotilas::annaSiirrot(std::list<Siirto>& lista, Ruutu* ruutu, Asema* asema, int vari)
 {
 	int sarake = ruutu->getSarake();
 	int rivi = ruutu->getRivi();
 	int varinSuunta = (vari == 0 ? 1 : -1);
-
+	
 	// korotus
 	// if (rivi == (vari == 0 ? 6 : 1))
 	// {
@@ -144,7 +158,7 @@ void Sotilas::annaSiirrot(std::list<Siirto> &lista, Ruutu *ruutu, Asema *asema, 
 	}
 }
 
-void Sotilas::lisaaSotilaanKorotukset(Siirto *siirto, std::list<Siirto> &lista, Asema *asema)
+void Nappula::lisaaSotilaanKorotukset(Siirto *siirto, std::list<Siirto> &lista, Asema *asema)
 {
 	int rivi = siirto->getLoppuruutu().getRivi();
 

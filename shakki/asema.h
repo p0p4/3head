@@ -47,6 +47,8 @@ public:
 	bool getOnkoMustaKTliikkunut();							// Linnoittuminen mahdollista?
 	void annaVastustajanSiirrot(std::list<Siirto>& lista);
 	double kuningasTurvassa(int vari);
+
+	bool ihmisenVuoro;
 	
 private:
 

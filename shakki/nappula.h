@@ -47,6 +47,7 @@ public:
 	void setKoodi(int koodi) { _koodi = koodi; }
 
 	void siirrotSuuntaan(std::list<Siirto> &lista, Ruutu *, Asema *, int vari, int dx, int dy, int askeleet);
+	void lisaaSotilaanKorotukset(Siirto*, std::list<Siirto>& lista, Asema*);
 };
 
 // Torni-aliluokka. Virtuaalinen perint� tarkoittaa, ett� kantaluokka perit��n moniperinn�ss� vain kerran
@@ -97,7 +98,4 @@ class Sotilas : public Nappula
 public:
 	Sotilas(std::wstring unicode, int vari, int koodi) : Nappula(unicode, vari, koodi) {}
 	void annaSiirrot(std::list<Siirto> &lista, Ruutu *, Asema *, int vari);
-
-private:
-	void lisaaSotilaanKorotukset(Siirto *, std::list<Siirto> &lista, Asema *);
 };
