@@ -67,7 +67,7 @@ void Kayttoliittyma::piirraLauta(std::list<Siirto> &lista)
     muodollisesti korrekti (ei tarkista aseman laillisuutta)
     Ottaa irti myös nappulan kirjaimen (K/D/L/R/T), tarkistaa että kirjain korrekti
 */
-Siirto Kayttoliittyma::annaVastustajanSiirto()
+Siirto Kayttoliittyma::annaVastustajanSiirto(std::list<Siirto>& lista)
 {
     Ruutu alku;
     Ruutu loppu;
@@ -99,14 +99,14 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
         if ((alku.getRivi() < 0 || alku.getRivi() > 7) || (alku.getSarake() < 0 || alku.getSarake() > 7) || (loppu.getRivi() < 0 || loppu.getRivi() > 7) || (loppu.getSarake() < 0 || loppu.getSarake() > 7))
         {
             wcout << "Virheellinen siirto." << endl;
-            siirto = annaVastustajanSiirto();
+            siirto = annaVastustajanSiirto(lista);
             return siirto;
         }
 
         Siirto siirtoTemp(alku, loppu);
         siirto = siirtoTemp;
     }
-    else if (siirtoStr.length() == 5 && siirtoStr[0] != 'O')
+    else if (siirtoStr.length() == 5 && siirtoStr[0] != 'O' && siirtoStr[0] != 'o')
     {
         alku.setSarake(int(siirtoStr[0]) - asciiConversionChar);
         alku.setRivi((int)siirtoStr[1] - asciiConversionNum);
@@ -117,23 +117,32 @@ Siirto Kayttoliittyma::annaVastustajanSiirto()
         if ((alku.getRivi() < 0 || alku.getRivi() > 7) || (alku.getSarake() < 0 || alku.getSarake() > 7) || (loppu.getRivi() < 0 || loppu.getRivi() > 7) || (loppu.getSarake() < 0 || loppu.getSarake() > 7))
         {
             wcout << "Virheellinen siirto." << endl;
-            siirto = annaVastustajanSiirto();
+            siirto = annaVastustajanSiirto(lista);
             return siirto;
         }
 
         Siirto siirtoTemp(alku, loppu);
         siirto = siirtoTemp;
     }
-    else if (siirtoStr == "O-O-O")
+    else if (siirtoStr == "O-O-O" || siirtoStr == "o-o-o")
     {
         Siirto siirtoTemp(false, true);
         siirto = siirtoTemp;
     }
-    else if (siirtoStr == "O-O")
+    else if (siirtoStr == "O-O" || siirtoStr == "o-o")
     {
         Siirto siirtoTemp(true, false);
         siirto = siirtoTemp;
     }
+
+    for(Siirto &s : lista)
+    {
+        if (s == siirto)
+        {
+            return siirto;
+        }
+    }
+    siirto = annaVastustajanSiirto(lista);
 
     return siirto;
 }

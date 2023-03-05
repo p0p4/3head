@@ -11,7 +11,7 @@ class Kayttoliittyma
 public:
 	void aseta_asema(Asema *asema) { this->_asema = asema; }
 	void piirraLauta(std::list<Siirto> &lista);
-	Siirto annaVastustajanSiirto();
+	Siirto annaVastustajanSiirto(std::list<Siirto>& lista);
 	int kysyVastustajanVari();
 
 	static Kayttoliittyma *getInstance();

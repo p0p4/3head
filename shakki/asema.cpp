@@ -87,73 +87,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 	lS = siirto->getLoppuruutu().getSarake();
 	lR = siirto->getLoppuruutu().getRivi();
 
-	// Kaksoisaskel-lippu on oletusarvoisesti pois p��lt�.
-	// Asetetaan my�hemmin, jos tarvii.
-
-	// Tarkastetaan on siirto lyhyt linna
-	if (siirto->onkoLyhytLinna())
-	{
-		int rivi = 7 * getSiirtovuoro();
-		_lauta[6][rivi] = _lauta[4][rivi];
-		_lauta[5][rivi] = _lauta[7][rivi];
-		_lauta[4][rivi] = NULL;
-		_lauta[7][rivi] = NULL;
-	}
-	// onko pitk� linna
-	else if (siirto->onkoPitkalinna())
-	{
-		int rivi = 7 * getSiirtovuoro();
-		_lauta[2][rivi] = _lauta[4][rivi];
-		_lauta[3][rivi] = _lauta[0][rivi];
-		_lauta[4][rivi] = NULL;
-		_lauta[0][rivi] = NULL;
-	}
-	// Kaikki muut siirrot
-	else
-	{
-		// Ottaa siirron alkuruudussa olleen nappulan talteen
-
-		// Ohestaly�nti on tyhj��n ruutuun. Vieress� oleva (sotilas) poistetaan.
-		if (kaksoisaskelSarakkeella != -1)
-		{
-			if (_lauta[aS][aR] == vs && lS == kaksoisaskelSarakkeella)
-			{
-				_lauta[lS][lR - 1] = NULL;
-			}
-			else if (_lauta[aS][aR] == ms && lS == kaksoisaskelSarakkeella)
-			{
-				_lauta[lS][lR + 1] = NULL;
-			}
-		}
-
-		// Tarkistetaan oliko sotilaan kaksoisaskel
-		// (asetetaan kaksoisaskel-lippu)
-		if (_lauta[aS][aR] == vs && aR == 1 && lR == 3)
-		{
-			kaksoisaskelSarakkeella = lS;
-		}
-		else if (_lauta[aS][aR] == ms && aR == 6 && lR == 4)
-		{
-			kaksoisaskelSarakkeella = lS;
-		}
-		else
-		{
-			kaksoisaskelSarakkeella = -1;
-		}
-
-		// Laittaa talteen otetun nappulan uuteen ruutuun
-
-		//// Katsotaan jos nappula on sotilas ja rivi on p��tyrivi niin ei vaihdeta nappulaa
-		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym�n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
-
-		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l�htenyt nappula
-		if (!(_lauta[aS][aR] == vs && lR == 7) && !(_lauta[aS][aR] == ms && lR == 0))
-		{
-			_lauta[lS][lR] = _lauta[aS][aR];
-		}
-		_lauta[aS][aR] = NULL;
-	}
-
 	// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v�reille)
 	if (_lauta[aS][aR] == vk && !getOnkoValkeaKuningasLiikkunut())
 	{
@@ -186,6 +119,73 @@ void Asema::paivitaAsema(Siirto *siirto)
 		{
 			_onkoMustaKTliikkunut = true;
 		}
+	}
+
+	// Kaksoisaskel-lippu on oletusarvoisesti pois p��lt�.
+	// Asetetaan my�hemmin, jos tarvii.
+
+	// Tarkastetaan on siirto lyhyt linna
+	if (siirto->onkoLyhytLinna())
+	{
+		int rivi = 7 * getSiirtovuoro();
+		_lauta[6][rivi] = _lauta[4][rivi];
+		_lauta[5][rivi] = _lauta[7][rivi];
+		_lauta[4][rivi] = NULL;
+		_lauta[7][rivi] = NULL;
+	}
+	// onko pitk� linna
+	else if (siirto->onkoPitkalinna())
+	{
+		int rivi = 7 * getSiirtovuoro();
+		_lauta[2][rivi] = _lauta[4][rivi];
+		_lauta[3][rivi] = _lauta[0][rivi];
+		_lauta[4][rivi] = NULL;
+		_lauta[0][rivi] = NULL;
+	}
+	// Kaikki muut siirrot
+	else
+	{
+		// Ottaa siirron alkuruudussa olleen nappulan talteen
+
+		// Ohestaly�nti on tyhj��n ruutuun. Vieress� oleva (sotilas) poistetaan.
+		if (kaksoisaskelSarakkeella != -1)
+		{
+			if (_lauta[aS][aR] == vs && lS == kaksoisaskelSarakkeella && aR == 4)
+			{
+				_lauta[lS][lR - 1] = NULL;
+			}
+			else if (_lauta[aS][aR] == ms && lS == kaksoisaskelSarakkeella && aR == 3)
+			{
+				_lauta[lS][lR + 1] = NULL;
+			}
+		}
+
+		// Tarkistetaan oliko sotilaan kaksoisaskel
+		// (asetetaan kaksoisaskel-lippu)
+		if (_lauta[aS][aR] == vs && aR == 1 && lR == 3)
+		{
+			kaksoisaskelSarakkeella = lS;
+		}
+		else if (_lauta[aS][aR] == ms && aR == 6 && lR == 4)
+		{
+			kaksoisaskelSarakkeella = lS;
+		}
+		else
+		{
+			kaksoisaskelSarakkeella = -1;
+		}
+
+		// Laittaa talteen otetun nappulan uuteen ruutuun
+
+		//// Katsotaan jos nappula on sotilas ja rivi on p��tyrivi niin ei vaihdeta nappulaa
+		////eli alkuruutuun laitetaan null ja loppuruudussa on jo kliittym�n laittama nappula MIIKKA, ei taida minmaxin kanssa hehkua?
+
+		////muissa tapauksissa alkuruutuun null ja loppuruutuun sama alkuruudusta l�htenyt nappula
+		if (!(_lauta[aS][aR] == vs && lR == 7) && !(_lauta[aS][aR] == ms && lR == 0))
+		{
+			_lauta[lS][lR] = _lauta[aS][aR];
+		}
+		_lauta[aS][aR] = NULL;
 	}
 
 	// p�ivitet��n _siirtovuoro
@@ -502,7 +502,7 @@ MinMaxPaluu Asema::minimax(int syvyys)
 	double alpha = -100000;
 	double beta = 100000;
 
-	auto start_time = std::chrono::high_resolution_clock::now();
+	//auto start_time = std::chrono::high_resolution_clock::now();
 
 	if (getSiirtovuoro() == 0)
 	{
@@ -724,11 +724,13 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto> &lista)
 
 void Asema::annaVastustajanSiirrot(std::list<Siirto> &lista)
 {
+	int vastustajanVari = (_siirtovuoro == 0 ? 1 : 0);
+
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 8; j++)
 		{
-			if (_lauta[j][i] != NULL && _lauta[j][i]->getVari() == _siirtovuoro)
+			if (_lauta[j][i] != NULL && _lauta[j][i]->getVari() == vastustajanVari)
 			{
 				Ruutu ruutu(j, i);
 				_lauta[j][i]->annaSiirrot(lista, &ruutu, this, _lauta[j][i]->getVari());

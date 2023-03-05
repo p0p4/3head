@@ -46,7 +46,7 @@ int main()
 		if (asema.getSiirtovuoro() == koneenVari)
 		{
 			MinMaxPaluu paluu;
-			paluu = asema.minimax(3);
+			paluu = asema.minimax(2);
 
 			siirto = paluu._parasSiirto;
 			wcout << "valitun siirron eval:" << paluu._evaluointiArvo << endl;
@@ -54,7 +54,7 @@ int main()
 		else
 		{
 			wcout << (asema.getSiirtovuoro() == 0 ? "valkoinen" : "musta") << endl;
-			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto();
+			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto(lista);
 		}
 		asema.paivitaAsema(&siirto);
 
