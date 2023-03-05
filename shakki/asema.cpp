@@ -513,10 +513,10 @@ MinMaxPaluu Asema::minimax(int syvyys)
 		paluuarvo = mini(syvyys, this, alpha, beta);
 	}
 
-	auto end_time = std::chrono::high_resolution_clock::now();
-    auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
+	//auto end_time = std::chrono::high_resolution_clock::now();
+ //   auto elapsed_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time).count();
 
-    std::cout << "Elapsed time: " << elapsed_time << " ms" << std::endl;
+ //   std::cout << "Elapsed time: " << elapsed_time << " ms" << std::endl;
 
 	return paluuarvo;
 }
