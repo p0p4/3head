@@ -45,10 +45,12 @@ public:
 	bool getOnkoValkeaKTliikkunut();						// Linnoittuminen mahdollista?
 	bool getOnkoMustaDTliikkunut();							// Linnoittuminen mahdollista?
 	bool getOnkoMustaKTliikkunut();							// Linnoittuminen mahdollista?
-	void annaVastustajanSiirrot(std::list<Siirto>& lista);
+	void annaVastustajanSiirrot(std::list<Siirto>& lista, int vastustajanVari);
 	double kuningasTurvassa(int vari);
 
 	bool ihmisenVuoro;
+	Ruutu valkeanKuninkaanRuutu;
+	Ruutu mustanKuninkaanRuutu;
 	
 private:
 

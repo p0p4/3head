@@ -74,7 +74,15 @@ Asema::Asema()
 	_onkoValkeaKTliikkunut = false;
 	_onkoMustaDTliikkunut = false;
 	_onkoMustaKTliikkunut = false;
+
 	ihmisenVuoro = false;
+
+	valkeanKuninkaanRuutu.setSarake(4);
+	valkeanKuninkaanRuutu.setRivi(0);
+
+	mustanKuninkaanRuutu.setSarake(4);
+	mustanKuninkaanRuutu.setRivi(7);
+
 }
 
 void Asema::paivitaAsema(Siirto *siirto)
@@ -89,13 +97,36 @@ void Asema::paivitaAsema(Siirto *siirto)
 	lR = siirto->getLoppuruutu().getRivi();
 
 	// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v�reille)
-	if (_lauta[aS][aR] == vk && !getOnkoValkeaKuningasLiikkunut())
+	//if (_lauta[aS][aR] == vk && !getOnkoValkeaKuningasLiikkunut())
+	//{
+	//	_onkoValkeaKuningasLiikkunut = true;
+	//}
+	//else if (_lauta[aS][aR] == mk && !getOnkoMustaKuningasLiikkunut())
+	//{
+	//	_onkoMustaKuningasLiikkunut = true;
+	//}
+
+	// katsotaan jos liikkunut nappula on kuningas niin muutetaan onkoKuningasLiikkunut arvo (molemmille v�reille)
+	// ja päivittää kuninkaan ruudun
+	if (_lauta[aS][aR] == vk)
 	{
-		_onkoValkeaKuningasLiikkunut = true;
+		valkeanKuninkaanRuutu.setSarake(lS);
+		valkeanKuninkaanRuutu.setRivi(lR);
+
+		if (!getOnkoValkeaKuningasLiikkunut())
+		{
+			_onkoValkeaKuningasLiikkunut = true;
+		}
 	}
-	else if (_lauta[aS][aR] == mk && !getOnkoMustaKuningasLiikkunut())
+	else if (_lauta[aS][aR] == mk)
 	{
-		_onkoMustaKuningasLiikkunut = true;
+		mustanKuninkaanRuutu.setSarake(lS);
+		mustanKuninkaanRuutu.setRivi(lR);
+
+		if (!getOnkoMustaKuningasLiikkunut())
+		{
+			_onkoMustaKuningasLiikkunut = true;
+		}
 	}
 
 	// katsotaan jos liikkunut nappula on torni niin muutetaan onkoTorniLiikkunut arvo (molemmille v�reille ja molemmille torneille)
@@ -244,8 +275,6 @@ void Asema::paivitaAsema(Siirto *siirto)
 
 			_lauta[lS][lR] = siirto->_miksikorotetaan;
 		}
-
-
 
 		_lauta[aS][aR] = NULL;
 	}
@@ -595,23 +624,23 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema *a, double alpha, double beta)
 	}
 
     MinMaxPaluu temp;
-    Ruutu kuninkaanRuutu;
+    Ruutu kuninkaanRuutu = valkeanKuninkaanRuutu;
 
     std::list<Siirto> lista;
 
     a->annaLaillisetSiirrot(lista);
 
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j++)
-        {
-            if (a->_lauta[j][i] == vk)
-            {
-                kuninkaanRuutu.setSarake(j);
-                kuninkaanRuutu.setRivi(i);
-            }
-        }
-    }
+    //for (int i = 0; i < 8; i++)
+    //{
+    //    for (int j = 0; j < 8; j++)
+    //    {
+    //        if (a->_lauta[j][i] == vk)
+    //        {
+    //            kuninkaanRuutu.setSarake(j);
+    //            kuninkaanRuutu.setRivi(i);
+    //        }
+    //    }
+    //}
 
     if (lista.empty() && a->onkoRuutuUhattu(&kuninkaanRuutu, 0))
     {
@@ -662,23 +691,23 @@ MinMaxPaluu Asema::mini(int syvyys, Asema *a, double alpha, double beta)
 
 
     MinMaxPaluu temp;
-    Ruutu kuninkaanRuutu;
+    Ruutu kuninkaanRuutu = mustanKuninkaanRuutu;
 
     std::list<Siirto> lista;
 
     a->annaLaillisetSiirrot(lista);
 
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j++)
-        {
-            if (a->_lauta[j][i] == mk)
-            {
-                kuninkaanRuutu.setSarake(j);
-                kuninkaanRuutu.setRivi(i);
-            }
-        }
-    }
+    //for (int i = 0; i < 8; i++)
+    //{
+    //    for (int j = 0; j < 8; j++)
+    //    {
+    //        if (a->_lauta[j][i] == mk)
+    //        {
+    //            kuninkaanRuutu.setSarake(j);
+    //            kuninkaanRuutu.setRivi(i);
+    //        }
+    //    }
+    //}
 
     if (lista.empty() && a->onkoRuutuUhattu(&kuninkaanRuutu, 1))
     {
@@ -720,7 +749,7 @@ MinMaxPaluu Asema::mini(int syvyys, Asema *a, double alpha, double beta)
 bool Asema::onkoRuutuUhattu(Ruutu *ruutu, int vastustajanVari)
 {
 	list<Siirto> vastustajanSiirrot;
-	annaVastustajanSiirrot(vastustajanSiirrot);
+	annaVastustajanSiirrot(vastustajanSiirrot, vastustajanVari);
 
 	for (Siirto s : vastustajanSiirrot)
 	{
@@ -735,38 +764,60 @@ bool Asema::onkoRuutuUhattu(Ruutu *ruutu, int vastustajanVari)
 void Asema::huolehdiKuninkaanShakeista(std::list<Siirto> &lista, int vari)
 {
 	Ruutu kuninkaanRuutu;
+
+	if (vari == 0)
+	{
+		kuninkaanRuutu = valkeanKuninkaanRuutu;
+	}
+	else if (vari == 1)
+	{
+		kuninkaanRuutu = mustanKuninkaanRuutu;
+	}
+
 	list<Siirto> tempLista;
+
+	//for (Siirto s : lista)
+	//{
+	//	Asema temp = *this;
+	//	temp.paivitaAsema(&s);
+
+	//	for (int i = 0; i < 8; i++)
+	//	{
+	//		for (int j = 0; j < 8; j++)
+	//		{
+	//			if (temp._lauta[j][i] == vk && vari == 0)
+	//			{
+	//				kuninkaanRuutu.setSarake(j);
+	//				kuninkaanRuutu.setRivi(i);
+	//				if (!temp.onkoRuutuUhattu(&kuninkaanRuutu, temp._siirtovuoro))
+	//				{
+	//					tempLista.push_back(s);
+	//				}
+	//			}
+	//			else if (temp._lauta[j][i] == mk && vari == 1)
+	//			{
+	//				kuninkaanRuutu.setSarake(j);
+	//				kuninkaanRuutu.setRivi(i);
+	//				if (!temp.onkoRuutuUhattu(&kuninkaanRuutu, temp._siirtovuoro))
+	//				{
+	//					tempLista.push_back(s);
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 
 	for (Siirto s : lista)
 	{
 		Asema temp = *this;
 		temp.paivitaAsema(&s);
 
-		for (int i = 0; i < 8; i++)
+		if (!temp.onkoRuutuUhattu(&kuninkaanRuutu, temp._siirtovuoro))
 		{
-			for (int j = 0; j < 8; j++)
-			{
-				if (temp._lauta[j][i] == vk && vari == 0)
-				{
-					kuninkaanRuutu.setSarake(j);
-					kuninkaanRuutu.setRivi(i);
-					if (!temp.onkoRuutuUhattu(&kuninkaanRuutu, temp._siirtovuoro))
-					{
-						tempLista.push_back(s);
-					}
-				}
-				else if (temp._lauta[j][i] == mk && vari == 1)
-				{
-					kuninkaanRuutu.setSarake(j);
-					kuninkaanRuutu.setRivi(i);
-					if (!temp.onkoRuutuUhattu(&kuninkaanRuutu, temp._siirtovuoro))
-					{
-						tempLista.push_back(s);
-					}
-				}
-			}
+			tempLista.push_back(s);
 		}
 	}
+
 	lista = tempLista;
 }
 
@@ -788,9 +839,9 @@ void Asema::annaLaillisetSiirrot(std::list<Siirto> &lista)
 	annaLinnoitusSiirrot(lista, _siirtovuoro);
 }
 
-void Asema::annaVastustajanSiirrot(std::list<Siirto> &lista)
+void Asema::annaVastustajanSiirrot(std::list<Siirto> &lista, int vastustajanVari)
 {
-	int vastustajanVari = (_siirtovuoro == 0 ? 1 : 0);
+	//int vastustajanVari = (_siirtovuoro == 0 ? 1 : 0);
 
 	for (int i = 0; i < 8; i++)
 	{
