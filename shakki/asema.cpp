@@ -587,6 +587,13 @@ MinMaxPaluu Asema::minimax(int syvyys)
 MinMaxPaluu Asema::maxi(int syvyys, Asema *a, double alpha, double beta)
 {
     MinMaxPaluu paluu;
+
+	if (syvyys == 0)
+	{
+		paluu._evaluointiArvo = a->evaluoi();
+		return paluu;
+	}
+
     MinMaxPaluu temp;
     Ruutu kuninkaanRuutu;
 
@@ -614,12 +621,6 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema *a, double alpha, double beta)
     else if (lista.empty())
     {
         paluu._evaluointiArvo = 0;
-        return paluu;
-    }
-
-    if (syvyys == 0)
-    {
-        paluu._evaluointiArvo = a->evaluoi();
         return paluu;
     }
 
@@ -652,6 +653,14 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema *a, double alpha, double beta)
 MinMaxPaluu Asema::mini(int syvyys, Asema *a, double alpha, double beta)
 {
     MinMaxPaluu paluu;
+
+	if (syvyys == 0)
+	{
+		paluu._evaluointiArvo = a->evaluoi();
+		return paluu;
+	}
+
+
     MinMaxPaluu temp;
     Ruutu kuninkaanRuutu;
 
@@ -679,12 +688,6 @@ MinMaxPaluu Asema::mini(int syvyys, Asema *a, double alpha, double beta)
     else if (lista.empty())
     {
         paluu._evaluointiArvo = 0;
-        return paluu;
-    }
-
-    if (syvyys == 0)
-    {
-        paluu._evaluointiArvo = a->evaluoi();
         return paluu;
     }
 

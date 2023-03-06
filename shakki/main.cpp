@@ -46,7 +46,7 @@ int main()
 		if (asema.getSiirtovuoro() == koneenVari)
 		{
 			MinMaxPaluu paluu;
-			paluu = asema.minimax(2);
+			paluu = asema.minimax(4);
 
 			siirto = paluu._parasSiirto;
 			wcout << "valitun siirron eval:" << paluu._evaluointiArvo << endl;
