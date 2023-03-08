@@ -34,7 +34,7 @@ int main()
 		asema.annaLaillisetSiirrot(lista);
 		// DEBUG: Lailliset siirrot
 		Kayttoliittyma::getInstance()->piirraLauta(lista);
-
+		int o;
 		if (lista.size() == 0)
 		{
 			lopetus = 0;
@@ -49,7 +49,6 @@ int main()
 			paluu = asema.minimax(4);
 
 			siirto = paluu._parasSiirto;
-			wcout << "valitun siirron eval:" << paluu._evaluointiArvo << endl;
 		}
 		else
 		{
@@ -59,7 +58,9 @@ int main()
 			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto(lista);
 		}
 		asema.paivitaAsema(&siirto);
+		asema.evaluoi();
 
+		wcout << asema.evaluoi();
 		wcout << "eval: " << asema.evaluoi() << endl;
 	}
 

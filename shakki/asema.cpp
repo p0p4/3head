@@ -76,6 +76,10 @@ Asema::Asema()
 	_onkoMustaKTliikkunut = false;
 
 	ihmisenVuoro = false;
+	valkeidenUpseerienLkm = 6;
+	mustienUpseerienLkm = 6;
+	valkeaDaami = true;
+	mustaDaami = true;
 
 	valkeanKuninkaanRuutu.setSarake(4);
 	valkeanKuninkaanRuutu.setRivi(0);
@@ -345,7 +349,13 @@ double Asema::evaluoi()
 	// kertoimet asetettu sen takia ett� niiden avulla asioiden painoarvoa voidaan s��t�� helposti yhdest� paikasta
 	double kuningasKerroin = 1;
 	double keskustaKerroin = 1;
-	double linjaKerroin = 0.05;
+	double linjaKerroin = 0.2;
+
+	if (!onkoAvausTaiKeskipeli(0) || !onkoAvausTaiKeskipeli(1))
+	{
+		keskustaKerroin = keskustaKerroin * 0.3;
+		linjaKerroin = linjaKerroin * 0.5;
+	}
 
 	// 1. Nappuloiden arvo
 	valkeaArvo += laskeNappuloidenArvo(0);
@@ -357,6 +367,7 @@ double Asema::evaluoi()
 	mustaArvo += kuningasTurvassa(1) * kuningasKerroin;
 	// wcout << "Kuningas turvassa: " << valkeaArvo - mustaArvo << endl;
 
+
 	// 3. Arvosta keskustaa
 	valkeaArvo += nappuloitaKeskella(0) * keskustaKerroin;
 	mustaArvo += nappuloitaKeskella(1) * keskustaKerroin;
@@ -366,6 +377,12 @@ double Asema::evaluoi()
 	valkeaArvo += linjat(0) * linjaKerroin;
 	mustaArvo += linjat(1) * linjaKerroin;
 	// wcout << "Linjojen arvo: " << valkeaArvo - mustaArvo << endl;
+
+	valkeaArvo += ratsujaReunoilla(0);
+	mustaArvo += ratsujaReunoilla(1);
+
+	valkeaArvo += sotilaat(0);
+	mustaArvo += sotilaat(1);
 
 	return valkeaArvo - mustaArvo;
 }
@@ -464,12 +481,23 @@ bool Asema::onkoAvausTaiKeskipeli(int vari)
 				{
 					daami = true;
 				}
-				if (_lauta[i][j] != vs && _lauta[i][j] != ms)
+				if (_lauta[i][j] != vs && _lauta[i][j] != ms && _lauta[i][j] != vk && _lauta[i][j] != mk && _lauta[i][j] != vd && _lauta[i][j] != md)
 				{
 					upseeriLkm++;
 				}
 			}
 		}
+	}
+
+	if (vari == 0)
+	{
+		mustienUpseerienLkm = upseeriLkm;
+		mustaDaami = daami;
+	}
+	else if (vari == 1)
+	{
+		valkeidenUpseerienLkm = upseeriLkm;
+		valkeaDaami = daami;
 	}
 
 	// Jos vari on 0 eli valkoiset
@@ -534,7 +562,9 @@ double Asema::linjat(int vari)
 {
 	// 4. Arvosta pitkiä linjoja daami, torni ja lähetti
 	double arvo = 0;
+	double daamiArvo = 0;
 	std::list<Siirto> lista;
+	std::list<Siirto> daamiLista;
 
 	for (int i = 0; i < 8; i++)
 	{
@@ -553,13 +583,149 @@ double Asema::linjat(int vari)
 			{
 				_lauta[i][j]->annaSiirrot(lista, &ruutu, this, vari);
 			}
-			else if (_lauta[i][j] == vd || _lauta[i][j] == md)
+			else if ((!onkoAvausTaiKeskipeli(0) && _lauta[i][j] == vd) || (!onkoAvausTaiKeskipeli(1) && _lauta[i][j] == md))
 			{
-				_lauta[i][j]->annaSiirrot(lista, &ruutu, this, vari);
+				_lauta[i][j]->annaSiirrot(daamiLista, &ruutu, this, vari);
+				daamiArvo = daamiLista.size() / 2;
 			}
 		}
 	}
-	arvo = lista.size();
+	arvo = lista.size() + daamiArvo;
+
+	return arvo;
+}
+
+// arvostaa sotilata jotka suojaavat toisaan
+// ja sotilaita jotka ovat liikkuneet pidemmälle (loppupelissä enemmän)
+// kaksois sotilaista pisteitä pois
+double Asema::sotilaat(int vari)
+{
+	int kaksoisSotilaat = 0;
+	double arvo = 0;
+
+	if (vari == 0)
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			for (int j = 1; j < 6; j++)
+			{
+				if (_lauta[i][j] != NULL && _lauta[i][j] == vs)
+				{
+					kaksoisSotilaat++;
+
+					if ((i < 7 && _lauta[i + 1][j - 1] != NULL && _lauta[i + 1][j - 1] == vs) || (i > 0 && _lauta[i - 1][j - 1] != NULL && _lauta[i - 1][j - 1] == vs))
+					{
+						arvo += 0.05;
+					}
+
+					if (_lauta[i][j] != NULL && _lauta[i][j] == vs)
+					{
+						arvo += (j - 1) * 0.05;
+
+						if (onkoAvausTaiKeskipeli(0))
+						{
+							arvo += (j - 1) * 0.05;
+
+							if (!mustaDaami && mustienUpseerienLkm < 2)
+							{
+								arvo += (j - 1) * 0.05;
+							}
+						}
+					}
+				}
+			}
+
+			if (kaksoisSotilaat > 1)
+			{
+				arvo += kaksoisSotilaat * 0.1;
+			}
+
+			kaksoisSotilaat = 0;
+		}
+	}
+
+	if (vari == 1)
+	{
+		for (int i = 0; i < 7; i++)
+		{
+			for (int j = 1; j < 6; j++)
+			{
+				if (_lauta[i][j] != NULL && _lauta[i][j] == ms)
+				{
+					kaksoisSotilaat++;
+
+					if ((i < 7 && _lauta[i + 1][j + 1] != NULL && _lauta[i + 1][j + 1] == ms) || (i < 0 && _lauta[i - 1][j + 1] != NULL && _lauta[i - 1][j + 1] == ms))
+					{
+						arvo += 0.05;
+					}
+				}
+
+				if (_lauta[i][j] != NULL && _lauta[i][j] == ms)
+				{
+					arvo += (6 - j) * 0.05;
+
+					if (onkoAvausTaiKeskipeli(0))
+					{
+						arvo += (6 - j) * 0.05;
+
+						if (!valkeaDaami && valkeidenUpseerienLkm < 2)
+						{
+							arvo += (6 - j) * 0.05;
+						}
+					}
+				}
+			}
+
+			if (kaksoisSotilaat > 1)
+			{
+				arvo += kaksoisSotilaat * 0.1;
+			}
+
+			kaksoisSotilaat = 0;
+		}
+	}
+
+
+	return arvo;
+}
+
+
+// -0.11 jokaisesta ratsusta joka on pelilaudan reunalla.
+double Asema::ratsujaReunoilla(int vari)
+{
+	double arvo = 0;
+
+	for (int i = 0; i < 8; i++)
+	{
+		if (_lauta[0][i] != NULL && _lauta[0][i]->getVari() == vari && (_lauta[0][i] == vr || _lauta[0][i] == mr))
+		{
+			arvo -= 0.11;
+		}
+	}
+
+	for (int i = 0; i < 8; i++)
+	{
+		if (_lauta[7][i] != NULL && _lauta[7][i]->getVari() == vari && (_lauta[0][i] == vr || _lauta[0][i] == mr))
+		{
+			arvo -= 0.11;
+		}
+	}
+
+	for (int j = 0; j < 8; j++)
+	{
+		if (_lauta[j][0] != NULL && _lauta[j][0]->getVari() == vari && (_lauta[j][0] == vr || _lauta[j][0] == mr))
+		{
+			arvo -= 0.11;
+		}
+	}
+
+	for (int j = 0; j < 8; j++)
+	{
+		if (_lauta[j][7] != NULL && _lauta[j][7]->getVari() == vari && (_lauta[j][7] == vr || _lauta[j][7] == mr))
+		{
+			arvo -= 0.11;
+		}
+	}
 
 	return arvo;
 }
@@ -624,12 +790,11 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema *a, double alpha, double beta)
 	}
 
     MinMaxPaluu temp;
-    Ruutu kuninkaanRuutu = valkeanKuninkaanRuutu;
-
     std::list<Siirto> lista;
 
     a->annaLaillisetSiirrot(lista);
 
+	//Ruutu kuninkaanRuutu;
     //for (int i = 0; i < 8; i++)
     //{
     //    for (int j = 0; j < 8; j++)
@@ -642,7 +807,7 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema *a, double alpha, double beta)
     //    }
     //}
 
-    if (lista.empty() && a->onkoRuutuUhattu(&kuninkaanRuutu, 0))
+    if (lista.empty() && a->onkoRuutuUhattu(&valkeanKuninkaanRuutu, 0))
     {
         paluu._evaluointiArvo = -100000;
         return paluu;
@@ -691,12 +856,12 @@ MinMaxPaluu Asema::mini(int syvyys, Asema *a, double alpha, double beta)
 
 
     MinMaxPaluu temp;
-    Ruutu kuninkaanRuutu = mustanKuninkaanRuutu;
-
     std::list<Siirto> lista;
 
     a->annaLaillisetSiirrot(lista);
 
+
+	//Ruutu kuninkaanRuutu;
     //for (int i = 0; i < 8; i++)
     //{
     //    for (int j = 0; j < 8; j++)
@@ -709,7 +874,7 @@ MinMaxPaluu Asema::mini(int syvyys, Asema *a, double alpha, double beta)
     //    }
     //}
 
-    if (lista.empty() && a->onkoRuutuUhattu(&kuninkaanRuutu, 1))
+    if (lista.empty() && a->onkoRuutuUhattu(&mustanKuninkaanRuutu, 1))
     {
         paluu._evaluointiArvo = 100000;
         return paluu;
@@ -763,18 +928,18 @@ bool Asema::onkoRuutuUhattu(Ruutu *ruutu, int vastustajanVari)
 
 void Asema::huolehdiKuninkaanShakeista(std::list<Siirto> &lista, int vari)
 {
-	Ruutu kuninkaanRuutu;
-
-	if (vari == 0)
-	{
-		kuninkaanRuutu = valkeanKuninkaanRuutu;
-	}
-	else if (vari == 1)
-	{
-		kuninkaanRuutu = mustanKuninkaanRuutu;
-	}
-
 	list<Siirto> tempLista;
+
+	//Ruutu kuninkaanRuutu;
+
+	//if (vari == 0)
+	//{
+	//	kuninkaanRuutu = valkeanKuninkaanRuutu;
+	//}
+	//else if (vari == 1)
+	//{
+	//	kuninkaanRuutu = mustanKuninkaanRuutu;
+	//}
 
 	//for (Siirto s : lista)
 	//{
@@ -812,7 +977,11 @@ void Asema::huolehdiKuninkaanShakeista(std::list<Siirto> &lista, int vari)
 		Asema temp = *this;
 		temp.paivitaAsema(&s);
 
-		if (!temp.onkoRuutuUhattu(&kuninkaanRuutu, temp._siirtovuoro))
+		if (vari == 0 && !temp.onkoRuutuUhattu(&temp.valkeanKuninkaanRuutu, temp._siirtovuoro))
+		{
+			tempLista.push_back(s);
+		}
+		else if (vari == 1 && !temp.onkoRuutuUhattu(&temp.mustanKuninkaanRuutu, temp._siirtovuoro))
 		{
 			tempLista.push_back(s);
 		}

@@ -63,12 +63,21 @@ private:
 	bool _onkoMustaDTliikkunut;			// Linnoitus ei ole sallittu, jos daamisuvustan torni on liikkunut.	
 	bool _onkoMustaKTliikkunut;			// Linnoitus ei ole sallittu, jos kuningassivustan torni on liikkunut.
 
+	int mustienUpseerienLkm;
+	int valkeidenUpseerienLkm;
+	bool valkeaDaami;
+	bool mustaDaami;
+
 	double laskeNappuloidenArvo(int);
 	bool onkoAvausTaiKeskipeli(int);
 	double nappuloitaKeskella(int);
 	double linjat(int);
 	bool onkoRuutuUhattu(Ruutu*, int vastustajanVari);
 	void annaLinnoitusSiirrot(std::list<Siirto>& lista, int vari);
+
+	double ratsujaReunoilla(int vari);
+	double sotilaat(int vari);
+
 
 	// Karsii siirrot, jotka j�tt�v�t oman K:n shakkiin.
 	void huolehdiKuninkaanShakeista(std::list<Siirto>& lista, int vari); 
