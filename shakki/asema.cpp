@@ -620,7 +620,7 @@ double Asema::sotilaat(int vari)
 
 					if (_lauta[i][j] != NULL && _lauta[i][j] == vs)
 					{
-						arvo += (j - 1) * 0.05;
+						arvo += (j - 1) * 0.04;
 
 						if (onkoAvausTaiKeskipeli(0))
 						{
@@ -628,7 +628,7 @@ double Asema::sotilaat(int vari)
 
 							if (!mustaDaami && mustienUpseerienLkm < 2)
 							{
-								arvo += (j - 1) * 0.05;
+								arvo += (j - 1) * 0.07;
 							}
 						}
 					}
@@ -662,7 +662,7 @@ double Asema::sotilaat(int vari)
 
 				if (_lauta[i][j] != NULL && _lauta[i][j] == ms)
 				{
-					arvo += (6 - j) * 0.05;
+					arvo += (6 - j) * 0.04;
 
 					if (onkoAvausTaiKeskipeli(0))
 					{
@@ -670,7 +670,7 @@ double Asema::sotilaat(int vari)
 
 						if (!valkeaDaami && valkeidenUpseerienLkm < 2)
 						{
-							arvo += (6 - j) * 0.05;
+							arvo += (6 - j) * 0.07;
 						}
 					}
 				}
