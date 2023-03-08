@@ -39,6 +39,7 @@ int main()
 		{
 			lopetus = 0;
 			std::wcout << "Peli loppui";
+			wcout << "eval: " << asema.evaluoi() << endl;
 			continue;
 		}
 
@@ -62,6 +63,12 @@ int main()
 		asema.paivitaAsema(&siirto);
 
 		wcout << "eval: " << asema.evaluoi() << endl;
+		wcout << asema.laskeNappuloidenArvo(0) << asema.laskeNappuloidenArvo(1) << endl;
+		wcout << asema.linjat(0) << asema.linjat(1) << endl;
+		wcout << asema.kuningasTurvassa(0) << asema.kuningasTurvassa(1) << endl;
+		wcout << asema.nappuloitaKeskella(0) << asema.nappuloitaKeskella(1) << endl;
+		wcout << asema.ratsujaReunoilla(0) << asema.ratsujaReunoilla(1) << endl;
+		wcout << asema.sotilaat(0) << asema.sotilaat(1) << endl;
 	}
 
 	return 0;

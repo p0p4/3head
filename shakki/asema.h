@@ -52,7 +52,7 @@ public:
 	Ruutu valkeanKuninkaanRuutu;
 	Ruutu mustanKuninkaanRuutu;
 	
-private:
+//private:
 
 	// Lis�informaatio pelitilanteesta.
 	int _siirtovuoro;					// 0 = valkea, 1 = musta.

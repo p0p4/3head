@@ -349,7 +349,7 @@ double Asema::evaluoi()
 	// kertoimet asetettu sen takia ett� niiden avulla asioiden painoarvoa voidaan s��t�� helposti yhdest� paikasta
 	double kuningasKerroin = 1;
 	double keskustaKerroin = 1;
-	double linjaKerroin = 0.2;
+	double linjaKerroin = 0.1;
 
 	if (!onkoAvausTaiKeskipeli(0) || !onkoAvausTaiKeskipeli(1))
 	{
@@ -573,7 +573,7 @@ double Asema::linjat(int vari)
 			if (_lauta[i][j] == NULL || _lauta[i][j]->getVari() != vari)
 				continue;
 
-			Ruutu ruutu(j, i);
+			Ruutu ruutu(i, j);
 
 			if (_lauta[i][j] == vl || _lauta[i][j] == ml)
 			{
@@ -807,7 +807,7 @@ MinMaxPaluu Asema::maxi(int syvyys, Asema *a, double alpha, double beta)
     //    }
     //}
 
-    if (lista.empty() && a->onkoRuutuUhattu(&valkeanKuninkaanRuutu, 0))
+    if (lista.empty() && a->onkoRuutuUhattu(&valkeanKuninkaanRuutu, 1))
     {
         paluu._evaluointiArvo = -100000;
         return paluu;
@@ -874,7 +874,7 @@ MinMaxPaluu Asema::mini(int syvyys, Asema *a, double alpha, double beta)
     //    }
     //}
 
-    if (lista.empty() && a->onkoRuutuUhattu(&mustanKuninkaanRuutu, 1))
+    if (lista.empty() && a->onkoRuutuUhattu(&mustanKuninkaanRuutu, 0))
     {
         paluu._evaluointiArvo = 100000;
         return paluu;
