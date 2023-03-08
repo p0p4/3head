@@ -49,6 +49,8 @@ int main()
 			paluu = asema.minimax(4);
 
 			siirto = paluu._parasSiirto;
+
+			wcout << "Koneen siirto: " << char(siirto.getAlkuruutu().getSarake() + 97) << siirto.getAlkuruutu().getRivi() + 1 << "-" << char(siirto.getLoppuruutu().getSarake() + 97) << siirto.getLoppuruutu().getRivi() + 1 << endl;
 		}
 		else
 		{
@@ -58,9 +60,7 @@ int main()
 			siirto = Kayttoliittyma::getInstance()->annaVastustajanSiirto(lista);
 		}
 		asema.paivitaAsema(&siirto);
-		asema.evaluoi();
 
-		wcout << asema.evaluoi();
 		wcout << "eval: " << asema.evaluoi() << endl;
 	}
 
