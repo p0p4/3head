@@ -637,7 +637,7 @@ double Asema::sotilaat(int vari)
 
 			if (kaksoisSotilaat > 1)
 			{
-				arvo += kaksoisSotilaat * 0.1;
+				arvo += kaksoisSotilaat * 0.2;
 			}
 
 			kaksoisSotilaat = 0;
@@ -678,7 +678,7 @@ double Asema::sotilaat(int vari)
 
 			if (kaksoisSotilaat > 1)
 			{
-				arvo += kaksoisSotilaat * 0.1;
+				arvo += kaksoisSotilaat * 0.2;
 			}
 
 			kaksoisSotilaat = 0;
