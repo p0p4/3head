@@ -354,8 +354,9 @@ double Asema::evaluoi()
 	if (!onkoAvausTaiKeskipeli(0) || !onkoAvausTaiKeskipeli(1))
 	{
 		keskustaKerroin = keskustaKerroin * 0.3;
-		linjaKerroin = linjaKerroin * 0.5;
+		linjaKerroin = linjaKerroin * 0.3;
 	}
+
 
 	// 1. Nappuloiden arvo
 	valkeaArvo += laskeNappuloidenArvo(0);
